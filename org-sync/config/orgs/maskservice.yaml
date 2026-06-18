@@ -1,0 +1,6 @@
+org: maskservice
+tagline: "Mask service firmware, calibration tooling and deployment automation."
+homepage_base: https://maskservice.github.io
+default_topics:
+  - maskservice
+  - python
