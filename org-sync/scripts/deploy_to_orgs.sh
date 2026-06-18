@@ -29,6 +29,8 @@ for org in "${ORGS[@]}"; do
   mkdir -p "$target/profile" "$target/.github/workflows"
   rsync -a --delete \
     --exclude 'config/orgs/' \
+    --exclude '__pycache__/' \
+    --exclude '*.py[cod]' \
     "$SOURCE/org-sync/" "$target/org-sync/"
   mkdir -p "$target/org-sync/config/orgs"
   if [[ "$(realpath "$SOURCE")" != "$(realpath "$target")" ]]; then

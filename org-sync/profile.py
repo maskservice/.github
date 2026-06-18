@@ -72,8 +72,13 @@ def generate_profile_markdown(org_cfg: OrgConfig, repos: list[dict]) -> str:
         for repo in grouped[cat]:
             name = repo["name"]
             desc = _short_desc(repo.get("description"), "Project in the organization ecosystem.")
-            homepage = repo.get("homepageUrl") or f"{org_cfg.homepage_base}/{name}/"
-            lines.append(f"| [{name}]({homepage}) | {desc} | {_lang(repo)} |")
+            repo_url = f"https://github.com/{org_cfg.org}/{name}"
+            pages_url = repo.get("homepageUrl") or f"{org_cfg.homepage_base}/{name}/"
+            if pages_url.rstrip("/") == repo_url.rstrip("/"):
+                project_cell = f"[{name}]({repo_url})"
+            else:
+                project_cell = f"[{name}]({repo_url}) · [www]({pages_url})"
+            lines.append(f"| {project_cell} | {desc} | {_lang(repo)} |")
         lines.append("")
 
     lines.extend(
