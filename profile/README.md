@@ -15,7 +15,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | Projekt | Opis | Język |
 |---------|------|-------|
 | [archive](https://maskservice.github.io/archive/) | Archive | HTML |
-| [c2004](https://maskservice.github.io/c2004/) | C2004 monorepo workspace metadata; runtime packages live in subprojects. | Prolog |
+| [c2004](https://maskservice.github.io/c2004/) | C2004 monorepo workspace metadata; runtime packages live in subprojects. | TypeScript |
 | [deploy](https://maskservice.github.io/deploy/) | Deploy | Shell |
 | [firmware](https://maskservice.github.io/firmware/) | C20 Multi-Platform Firmware — workspace root | Python |
 | [fleet](https://maskservice.github.io/fleet/) | Fleet | Python |
