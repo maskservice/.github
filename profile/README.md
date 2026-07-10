@@ -21,7 +21,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | [fleet](https://maskservice.github.io/fleet/) | Fleet | Python |
 | [pilcd](https://maskservice.github.io/pilcd/) | Pilcd | — |
 | [pimotor](https://maskservice.github.io/pimotor/) | Pimotor | — |
-| [redeploy](https://maskservice.github.io/redeploy/) | Infrastructure migration toolkit: detect → plan → apply | Python |
+| [redeploy](https://maskservice.github.io/redeploy/) | Redeploy | Python |
 | [rp2040-keyboard](https://maskservice.github.io/rp2040-keyboard/) | Complete solution for RP2040-One based USB HID keypad with rotary encoder | Python |
 | [rpi-firmware](https://maskservice.github.io/rpi-firmware/) | Rpi Firmware | — |
 | [rpi-motor-arm69ak](https://maskservice.github.io/rpi-motor-arm69ak/) | Rpi Motor Arm69Ak | — |
