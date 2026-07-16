@@ -1,5 +1,8 @@
 # Copy this file to member repos as .github/workflows/trigger-org-sync.yml
 # Repository dispatch target is filled by bootstrap_triggers.py
+#
+# Requires org/repo secret ORG_SYNC_PAT (classic PAT with repo scope on
+# __ORG__/.github). Missing/empty token is skipped — never fail the push.
 
 name: Trigger org metadata sync
 
@@ -17,7 +20,21 @@ jobs:
   dispatch:
     runs-on: ubuntu-latest
     steps:
+      - name: Check ORG_SYNC_PAT
+        id: token
+        env:
+          ORG_SYNC_PAT: ${{ secrets.ORG_SYNC_PAT }}
+        run: |
+          if [ -z "${ORG_SYNC_PAT}" ]; then
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::ORG_SYNC_PAT is missing or empty — skipping org metadata sync (set org/repo secret)."
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Notify org metadata sync
+        if: steps.token.outputs.present == 'true'
+        continue-on-error: true
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.ORG_SYNC_PAT }}
