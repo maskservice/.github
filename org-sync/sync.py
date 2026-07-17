@@ -117,8 +117,16 @@ def main() -> int:
     if args.repository:
         targets = [r for r in repos if r["name"].lower() == args.repository.lower()]
         if not targets:
-            print(f"Repository not found in org: {args.repository}", file=sys.stderr)
-            return 1
+            # Repo is absent from the live org listing — typically it was just
+            # deleted or renamed. Don't hard-fail: skip per-repo metadata sync
+            # (there is nothing to sync) but still fall through to the profile
+            # refresh so the vanished repo drops out of the README (self-heal).
+            print(
+                f"Repository '{args.repository}' not found in org "
+                f"(deleted/renamed?) — skipping per-repo sync, refreshing profile only",
+                file=sys.stderr,
+            )
+            targets = []
 
     updated: list[dict] = []
     for repo in targets:
