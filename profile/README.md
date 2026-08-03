@@ -1,7 +1,7 @@
 # maskservice
 
 [![Organization](https://img.shields.io/badge/GitHub-maskservice-black.svg)](https://github.com/maskservice)
-[![Projects](https://img.shields.io/badge/projects-9-blue.svg)](https://github.com/maskservice?tab=repositories)
+[![Projects](https://img.shields.io/badge/projects-10-blue.svg)](https://github.com/maskservice?tab=repositories)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Mask service firmware, calibration tooling and deployment automation.
@@ -21,13 +21,14 @@ Mask service firmware, calibration tooling and deployment automation.
 | [fleet](https://github.com/maskservice/fleet) · [www](https://maskservice.github.io/fleet/) | Fleet | Python |
 | [i2c-pwm-mosfet-driver](https://github.com/maskservice/i2c-pwm-mosfet-driver) · [www](https://maskservice.github.io/i2c-pwm-mosfet-driver/) | I2C Pwm Mosfet Driver | — |
 | [rp2040-keyboard](https://github.com/maskservice/rp2040-keyboard) · [www](https://maskservice.github.io/rp2040-keyboard/) | Complete solution for RP2040-One based USB HID keypad with rotary encoder | Python |
+| [update](https://github.com/maskservice/update) · [www](https://maskservice.github.io/update/) | Update | Shell |
 | [workshop](https://github.com/maskservice/workshop) · [www](https://maskservice.github.io/workshop/) | Workshop | HTML |
 
 ---
 
 ## Statystyki
 
-- **Łącznie projektów**: 8
+- **Łącznie projektów**: 9
 - **Strony projektów**: `https://maskservice.github.io/<repo>/`
 
 _Ostatnia aktualizacja: 2026-08-03_
