@@ -22,7 +22,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | [fleet](https://github.com/maskservice/fleet) · [www](https://maskservice.github.io/fleet/) | Fleet | Python |
 | [i2c-pwm-mosfet-driver](https://github.com/maskservice/i2c-pwm-mosfet-driver) · [www](https://maskservice.github.io/i2c-pwm-mosfet-driver/) | I2C Pwm Mosfet Driver | — |
 | [recovery-images](https://github.com/maskservice/recovery-images) · [www](https://maskservice.github.io/recovery-images/) | Recovery Images | — |
-| [redeploy](https://github.com/maskservice/redeploy) · [www](https://maskservice.github.io/redeploy/) | C2004 BoardNet and DisplayNet deployment contracts and tooling | Shell |
+| [redeploy](https://github.com/maskservice/redeploy) · [www](https://maskservice.github.io/redeploy/) | Redeploy | Shell |
 | [rp2040-keyboard](https://github.com/maskservice/rp2040-keyboard) · [www](https://maskservice.github.io/rp2040-keyboard/) | Complete solution for RP2040-One based USB HID keypad with rotary encoder | Python |
 | [update](https://github.com/maskservice/update) · [www](https://maskservice.github.io/update/) | Update | Python |
 | [workshop](https://github.com/maskservice/workshop) · [www](https://maskservice.github.io/workshop/) | Workshop | HTML |
