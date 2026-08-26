@@ -1,7 +1,7 @@
 # maskservice
 
 [![Organization](https://img.shields.io/badge/GitHub-maskservice-black.svg)](https://github.com/maskservice)
-[![Projects](https://img.shields.io/badge/projects-17-blue.svg)](https://github.com/maskservice?tab=repositories)
+[![Projects](https://img.shields.io/badge/projects-18-blue.svg)](https://github.com/maskservice?tab=repositories)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Mask service firmware, calibration tooling and deployment automation.
@@ -29,13 +29,14 @@ Mask service firmware, calibration tooling and deployment automation.
 | [rp2040-keyboard](https://github.com/maskservice/rp2040-keyboard) · [www](https://maskservice.github.io/rp2040-keyboard/) | Complete solution for RP2040-One based USB HID keypad with rotary encoder | Python |
 | [stacknet-digital-twin](https://github.com/maskservice/stacknet-digital-twin) · [www](https://maskservice.github.io/stacknet-digital-twin/) | Contract-level StackNet/CoreS3 digital twin | Python |
 | [update](https://github.com/maskservice/update) · [www](https://maskservice.github.io/update/) | Update | Python |
+| [viewer](https://github.com/maskservice/viewer) · [www](https://maskservice.github.io/viewer/) | Viewer | Python |
 | [workshop](https://github.com/maskservice/workshop) · [www](https://maskservice.github.io/workshop/) | Workshop | HTML |
 
 ---
 
 ## Statystyki
 
-- **Łącznie projektów**: 16
+- **Łącznie projektów**: 17
 - **Strony projektów**: `https://maskservice.github.io/<repo>/`
 
 _Ostatnia aktualizacja: 2026-08-26_
