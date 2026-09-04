@@ -25,7 +25,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | [fleet](https://github.com/maskservice/fleet) · [www](https://maskservice.github.io/fleet/) | Fleet | Python |
 | [i2c-pwm-mosfet-driver](https://github.com/maskservice/i2c-pwm-mosfet-driver) · [www](https://maskservice.github.io/i2c-pwm-mosfet-driver/) | I2C Pwm Mosfet Driver | — |
 | [m122-controller](https://github.com/maskservice/m122-controller) · [www](https://maskservice.github.io/m122-controller/) | M122 Controller | C |
-| [maskauth](https://github.com/maskservice/maskauth) · [www](https://maskservice.github.io/maskauth/) | MaskService capability-based auth service | Python |
+| [maskauth](https://github.com/maskservice/maskauth) · [www](https://maskservice.github.io/maskauth/) | Universal identity-bound capability authorization for Maskservice applications | Python |
 | [maskservice-digital-twin-lab](https://github.com/maskservice/maskservice-digital-twin-lab) · [www](https://maskservice.github.io/maskservice-digital-twin-lab/) | Maskservice Digital Twin Lab | Python |
 | [recovery-images](https://github.com/maskservice/recovery-images) · [www](https://maskservice.github.io/recovery-images/) | Recovery Images | — |
 | [redeploy](https://github.com/maskservice/redeploy) · [www](https://maskservice.github.io/redeploy/) | Redeploy | Shell |
