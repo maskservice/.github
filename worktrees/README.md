@@ -62,8 +62,12 @@ rewriting their files. The placement guard rejects commits made from
 noncanonical linked worktrees and staged operational data, including forced
 adds. It preserves commits from the primary checkout even when unrelated
 historical registrations exist. Existing hook failures still block commits.
-A declared managed standard with a missing original pre-commit fails closed;
-it needs proper managed adoption, not a dummy success hook.
+For a clone with a managed manifest, the installer delegates to its official
+hook and preserves its original hooksPath: the managed host validator requires
+that exact path. Refreshing a previously composed managed clone restores the
+recorded original configuration. Missing managed hooks remain audit failures
+and require proper managed adoption; this installer does not fill them with
+a partial replacement or claim that commits are blocked in their absence.
 
 This is host installation, not a committed replacement for managed
 `new-project` files. Reinstall after updating this package; verify the effective

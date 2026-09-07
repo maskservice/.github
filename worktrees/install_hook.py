@@ -28,13 +28,33 @@ def install(repo):
                              text=True, capture_output=True).stdout.strip()
     if state_path.exists():
         state = json.loads(state_path.read_text())
-        if current != str(hooks):
+        if current != str(hooks) and not ((repo / '.governance/manifest.lock.json').is_file() and current == state['previousHooksPath']):
             raise ValueError('hooksPath changed since installation; preserve the new owner')
     else:
         if current == str(hooks) or hooks.exists():
             raise ValueError('Unowned hook directory; refusing to replace it')
         state = {'schema': 'maskservice.local-hook-install/v1', 'previousHooksPath': current,
                  'previousDefaultDirectory': str(common / 'hooks'), 'source': str(HERE)}
+    # Full managed adoption owns hooksPath exactly. Its host validator must
+    # keep seeing the package's original location; an extra wrapper would
+    # otherwise introduce a new conformance error even when it forwards calls.
+    if (repo / '.governance/manifest.lock.json').is_file():
+        previous = state['previousHooksPath']
+        if current == str(hooks):
+            if previous:
+                git(repo, 'config', '--local', 'core.hooksPath', previous)
+            else:
+                subprocess.run(['git', '-C', str(repo), 'config', '--local', '--unset', 'core.hooksPath'], check=True)
+        if state_path.exists():
+            state['mode'] = 'managed-delegation'
+            state_path.write_text(json.dumps(state, indent=2) + '\n')
+        original = Path(previous) if previous else common / 'hooks'
+        if not original.is_absolute():
+            original = repo / original
+        ready = (original / 'pre-commit').is_file() and os.access(original / 'pre-commit', os.X_OK)
+        return {'repository': str(repo), 'status': 'managed-delegation',
+                'originalHook': str(original / 'pre-commit'), 'managedHookExecutable': ready}
+    state['mode'] = 'composed'
     snapshot = common / 'maskservice-placement-guard'
     snapshot.mkdir(exist_ok=True)
     for name in ('precommit.py', 'audit.py'):

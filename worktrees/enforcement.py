@@ -32,7 +32,7 @@ def observe(repo):
         original = Path(state['previousHooksPath'] or state['previousDefaultDirectory'])
         original_hook = (original if original.is_absolute() else repo / original) / 'pre-commit'
         expected = state_path.parent / 'maskservice-hooks/pre-commit'
-        if hook != expected:
+        if state.get('mode') != 'managed-delegation' and hook != expected:
             findings.append({'code': 'installed-placement-guard-not-active'})
     lock_path = repo / '.governance/manifest.lock.json'
     lock = json.loads(lock_path.read_text()) if lock_path.is_file() else None
@@ -53,8 +53,10 @@ def observe(repo):
     workflows = list((repo / '.github/workflows').glob('*.yml')) + list((repo / '.github/workflows').glob('*.yaml'))
     # This is source evidence only. Required-check rules and run results need
     # GitHub observations; a matching string is not a successful CI receipt.
+    gate_commands = ('project/governance-check.sh', '.governance/governance_check.py',
+                     'wellmanifest_governance.py')
     gate_workflows = [str(p.relative_to(repo)) for p in workflows
-                      if 'project/governance-check.sh' in p.read_text()]
+                      if any(command in p.read_text() for command in gate_commands)]
     if not gate_workflows:
         findings.append({'code': 'governance-ci-invocation-not-found'})
     return {'repository': str(repo), 'precommit': str(hook),

@@ -15,6 +15,14 @@ class EnforcementTests(AuditTests):
         self.git('config', 'core.hooksPath', '.githooks')
         self.assertIn('precommit-missing', [x['code'] for x in enforcement.observe(self.repo)['findings']])
 
+    def test_direct_managed_ci_gate_is_recognized(self):
+        workflow = self.repo / '.github/workflows/governance.yml'
+        workflow.parent.mkdir(parents=True)
+        workflow.write_text('jobs:\n  enforce:\n    steps:\n      - run: python3 .governance/governance_check.py --root .\n')
+        record = enforcement.observe(self.repo)
+        self.assertEqual(record['gateWorkflowCandidates'], ['.github/workflows/governance.yml'])
+        self.assertNotIn('governance-ci-invocation-not-found', [x['code'] for x in record['findings']])
+
     def test_managed_drift_is_reported(self):
         target = self.repo / '.governance'
         target.mkdir()
@@ -65,15 +73,30 @@ class EnforcementTests(AuditTests):
         self.assertIn('original-policy', result.stderr)
         self.assertEqual(old.read_bytes(), before)
 
-    def test_missing_declared_managed_hook_fails_closed(self):
+    def test_managed_hooks_path_is_preserved_for_the_official_validator(self):
         path = self.repo / '.governance/manifest.lock.json'
         path.parent.mkdir()
         path.write_text('{}')
+        hook = self.repo / '.githooks/pre-commit'
+        hook.parent.mkdir()
+        hook.write_text('#!/bin/sh\nexit 0\n')
+        hook.chmod(0o755)
+        self.git('config', 'core.hooksPath', '.githooks')
+        report = install_hook.install(self.repo)
+        self.assertEqual(report['status'], 'managed-delegation')
+        self.assertTrue(report['managedHookExecutable'])
+        self.assertEqual(self.git('config', '--get', 'core.hooksPath').stdout.strip(), '.githooks')
+
+    def test_later_managed_adoption_restores_its_original_hook_location(self):
         self.git('config', 'core.hooksPath', '.githooks')
         install_hook.install(self.repo)
-        result = __import__('subprocess').run(['git', '-C', str(self.repo), 'commit', '--allow-empty', '-m', 'fixture'], capture_output=True, text=True)
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn('declared managed pre-commit', result.stderr)
+        path = self.repo / '.governance/manifest.lock.json'
+        path.parent.mkdir()
+        path.write_text('{}')
+        report = install_hook.install(self.repo)
+        self.assertFalse(report['managedHookExecutable'])
+        self.assertEqual(self.git('config', '--get', 'core.hooksPath').stdout.strip(), '.githooks')
+        self.assertIn('managed-precommit-missing', [x['code'] for x in enforcement.observe(self.repo)['findings']])
 
     def test_foreign_hooks_change_is_preserved(self):
         install_hook.install(self.repo)
