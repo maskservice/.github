@@ -428,9 +428,19 @@ def _version_tuple(value: str) -> tuple[int, int, int]:
 def feature_probe(
     git: str = "git",
     runner: Callable[..., subprocess.CompletedProcess[bytes]] = subprocess.run,
+    *,
+    from_worktree: str = ".",
 ) -> dict[str, Any]:
-    """Probe both the minimum version and required relative-path options."""
-    version_result = runner([git, "--version"], check=False, capture_output=True)
+    """Probe Git in the chosen repository, without mutating caller state."""
+    # Hooks and concurrent hosts may inherit selectors for another checkout.
+    # The explicit cwd owns this read-only observation, not those selectors.
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    context = runner(
+        [git, "-C", from_worktree, "rev-parse", "--git-dir"],
+        check=False, capture_output=True, env=env,
+    )
+    context_ok = context.returncode == 0
+    version_result = runner([git, "--version"], check=False, capture_output=True, env=env)
     version_text = (version_result.stdout + version_result.stderr).decode(
         "utf-8", "replace"
     ).strip()
@@ -444,12 +454,19 @@ def feature_probe(
 
     options: dict[str, bool] = {}
     for command in ("add", "repair"):
-        result = runner([git, "worktree", command, "-h"], check=False, capture_output=True)
-        help_text = (result.stdout + result.stderr).decode("utf-8", "replace")
-        options[command] = "relative-paths" in help_text
+        options[command] = False
+        if context_ok:
+            result = runner(
+                [git, "-C", from_worktree, "worktree", command, "-h"],
+                check=False, capture_output=True, env=env,
+            )
+            help_text = (result.stdout + result.stderr).decode("utf-8", "replace")
+            options[command] = result.returncode in (0, 129) and "relative-paths" in help_text
     supported = version_ok and all(options.values())
     return {
         "minimumGitVersion": MINIMUM_GIT_VERSION,
+        "repositoryContextValid": context_ok,
+        "probeError": None if context_ok else "repository_context_unavailable",
         "gitVersion": version_text,
         "versionSupported": version_ok,
         "worktreeAddRelativePaths": options["add"],
@@ -494,6 +511,8 @@ def main() -> int:
 
     probe = subparsers.add_parser("feature-probe")
     probe.add_argument("--git", default="git")
+    probe.add_argument("--from-worktree", default=".",
+                       help="Repository to probe; independent of the caller cwd")
 
     args = parser.parse_args()
     if args.command == "plan":
@@ -528,7 +547,7 @@ def main() -> int:
         print(json.dumps(record, indent=2))
         return 0
 
-    result = feature_probe(args.git)
+    result = feature_probe(args.git, from_worktree=args.from_worktree)
     print(json.dumps(result, indent=2))
     return 0 if result["supported"] else 1
 

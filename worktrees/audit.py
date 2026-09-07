@@ -11,7 +11,7 @@ import sys
 HERE = Path(__file__).resolve().parent
 IGNORES = ['/.worktrees/'] + [f'/.subactor/{part}/' for part in
     ('leases', 'sessions', 'recovery', 'receipts', 'cache', 'snapshots')]
-SKIP = {'.git', '.worktrees', 'worktrees', 'node_modules', '.venv', 'venv',
+SKIP = {'.git', '.subactor', '.worktrees', 'worktrees', 'node_modules', '.venv', 'venv',
         '__pycache__', '.cache', 'dist', 'build', 'storage'}
 
 
@@ -85,14 +85,19 @@ def audit(repo):
     return record
 
 
+def verify_source():
+    source = json.loads((HERE / 'vendor/source.json').read_text())
+    for name, artifact in source['artifacts'].items():
+        if hashlib.sha256((HERE / 'vendor' / name).read_bytes()).hexdigest() != artifact['sha256']:
+            raise ValueError(f'Pinned checker artifact changed: {name}')
+    return source
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('root', type=Path)
     args = parser.parse_args()
-    source = json.loads((HERE / 'vendor/source.json').read_text())
-    for name, artifact in source['artifacts'].items():
-        if hashlib.sha256((HERE / 'vendor' / name).read_bytes()).hexdigest() != artifact['sha256']:
-            parser.error(f'Pinned checker artifact changed: {name}')
+    source = verify_source()
     records, seen, errors = [], set(), []
     for repo in repositories(args.root.resolve()):
         try:

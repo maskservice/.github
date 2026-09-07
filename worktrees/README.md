@@ -40,3 +40,41 @@ them. A `prunable` entry is evidence of stale metadata, not deletion authority.
 The shared audit is not a replacement for full `new-project` adoption. Repos
 that use that package must update its managed files through `goal governance
 adopt`, preserving ticket ownership and publication checks.
+
+## Local enforcement and its limits
+
+The policy file is not proof that an agent host enforces it. Run
+`python3 worktrees/enforcement.py /path/to/maskservice` to observe effective
+Git hook paths, executable hooks, missing or modified managed files, and source
+references to the governance CI gate. This audit does not execute arbitrary
+hooks, infer successful tests from workflow text, or infer GitHub protection.
+Remote rules and exact-head run results require separate observations.
+
+Install the additional offline placement guard for an exact clone:
+
+```bash
+python3 worktrees/install_hook.py /path/to/repository
+```
+
+The installer records previous configuration in Git's common directory,
+packages the pinned checker offline, and composes the original hooks without
+rewriting their files. The placement guard rejects commits made from
+noncanonical linked worktrees and staged operational data, including forced
+adds. It preserves commits from the primary checkout even when unrelated
+historical registrations exist. Existing hook failures still block commits.
+A declared managed standard with a missing original pre-commit fails closed;
+it needs proper managed adoption, not a dummy success hook.
+
+This is host installation, not a committed replacement for managed
+`new-project` files. Reinstall after updating this package; verify the effective
+hook after any other hook installer or checkout relocation. Hook snapshots and
+configuration are local and do not follow a clone to another computer. They
+apply to Git invocations from any model or editor using that clone, not to
+arbitrary filesystem writes. A model that ignores Markdown, `git --no-verify`,
+a changed hooksPath or direct API publication requires an independent protected
+server boundary. Tests and required deployment receipts remain necessary.
+
+Use repository-local `.subactor` namespaces for operational working files.
+System-temporary test fixtures do not become delivery worktrees. Existing
+`/tmp` deployment scripts must be migrated by their owning runtime; this
+query-only standard neither deletes their data nor rewrites those scripts.

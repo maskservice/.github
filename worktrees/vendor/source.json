@@ -1,11 +1,11 @@
 {
   "repository": "wellmanifest/worktrees",
-  "revision": "b86559f7f5bc27eca0fcc6af54de0d9297d18e6b",
-  "version": "0.5.0",
+  "revision": "81e0d750f18ecace4436706250bf5deb190a000a",
+  "version": "0.5.1",
   "artifacts": {
     "conformance.py": {
       "sourcePath": "operations/conformance.py",
-      "sha256": "5e38dc9a4c953ba0fb2a4301a0917e609e0b00cebcb345a16962b13d1de02389"
+      "sha256": "d3309b76e2c91dd7f046b00322ec8cb48ef744b8b7908d70e475fedf95e5e196"
     },
     "worktrees.schema.json": {
       "sourcePath": "models/worktrees.schema.json",
