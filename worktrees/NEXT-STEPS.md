@@ -20,6 +20,14 @@ Opublikowane zmiany:
 
 Publikacja kodu nie potwierdza wdrożenia na DisplayNet ani zgodności danych.
 
+## P0 — odblokować CI redeploy
+
+Skonfigurować `DEPLOYMENT_DEPENDENCIES_READ_TOKEN` z prawem Contents read
+wyłącznie do prywatnych repozytoriów maskservice/update i maskservice/c2004.
+Następnie ponowić workflow i uzyskać sukces wszystkich 90 testów na runnerze.
+Kontrola polityki już przechodzi; lokalny sukces testów nie zamyka tej blokady.
+Nie kopiować szerokiego osobistego tokena agenta do repozytorium.
+
 ## P0 — dokończyć publikację istniejących prac
 
 1. **Update: uporządkować podstawy i zakresy ticketów.** Aktualny gate
@@ -51,10 +59,13 @@ kopię. Bez force-push, obchodzenia gate i automatycznego usuwania worktree.
 
 ## P1 — domknąć wymuszanie standardów
 
-1. Rozszerzyć inwentaryzację o wszystkie GitHub remote (nie tylko origin),
-   repozytoria organizacji oraz zależności. `redeploy` ujawnił lukę w liczeniu
-   poprzednich 17 repozytoriów. Sprawdzić jego rzeczywiste zabezpieczenia.
-2. Dla 11 repozytoriów z kontrolą polityki, lecz bez wymaganych checków,
+1. Spis API GitHuba wykazał 21 repozytoriów organizacji. Dodano ochronę
+   historii dla redeploy, archive, i2c-pwm-mosfet-driver i recovery-images.
+   Redeploy otrzymał też lokalne hooki, ignore i CI. Pozostaje audyt
+   wszystkich remote zależności oraz adopcja standardów w trzech pozostałych
+   repozytoriach, których nie ma w podstawowym lokalnym workspace. Aktualny
+   odczyt całej organizacji: ochrona historii 21/21, wymagane CI 6/21.
+2. Dla 12 repozytoriów z kontrolą polityki (w tym redeploy), lecz bez wymaganych checków,
    przygotować zgodny z trybem publikacji profil Validatora i wymagane CI.
    C2004 i core mają main-only: rozwiązanie musi walidować zmianę przed
    publikacją bez naruszania tego trybu. Nie dodawać wymagania, którego

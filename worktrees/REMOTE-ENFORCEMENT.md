@@ -167,3 +167,25 @@ Observed successful runs for the exact rollout commits:
 | c2004-firmware | [Run 34107614694](https://github.com/maskservice/c2004-firmware/actions/runs/34107614694) |
 | c2004 | [Run 34107860853](https://github.com/maskservice/c2004/actions/runs/34107860853) |
 | .github | [Run 34107291765](https://github.com/maskservice/.github/actions/runs/34107291765) |
+
+## Organization-wide observation and redeploy — 2026-09-07
+
+A paginated GitHub organization inventory found 21 repositories. Earlier counts
+of 17 described origin-mapped local clones, not the whole organization.
+`redeploy` has a separate GitHub remote while its origin is a LAN service.
+The other additional repositories are `archive`, `i2c-pwm-mosfet-driver`, and
+`recovery-images`. All four now have the same default-history policy without
+bypass actors. A fresh effective-rule audit of all 21 confirms 21 history
+protections and six repositories with required status checks; 15 still lack
+required CI. Ruleset IDs: redeploy 22438496, archive 22438574,
+i2c-pwm-mosfet-driver 22438579, recovery-images 22438585.
+
+Redeploy now adopts the ignore contract, agent placement instructions and
+composed pre-commit/pre-push hooks. Its hosted `standards / source-policy`
+check passed in [run 34108660393](https://github.com/maskservice/redeploy/actions/runs/34108660393).
+The 90 deployment tests pass locally, including with plugin autoload disabled.
+Hosted integration tests currently fail: private update and C2004 checkouts
+require additional read access. The workflow pins their exact commits and
+requires `DEPLOYMENT_DEPENDENCIES_READ_TOKEN` (Contents read only on those two
+repositories). No credential was copied from this host or created in GitHub.
+The test job remains fail-closed; it must not be reported as successful CI.
