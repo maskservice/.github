@@ -74,8 +74,8 @@ overwrite conflicting policies.
 A separate observation found failing `verify` checks on the current BoardNet
 and StackNet main commits. BoardNet run [34101532781](https://github.com/maskservice/boardnet-digital-twin/actions/runs/34101532781)
 reports `GOV-BASE-002` during the governance pytest gate after integration.
-This remains a CI repair item; earlier successful PR checks do not establish
-a successful check for the integrated main commit.
+This observation triggered the CI repairs recorded below; earlier successful
+PR checks alone did not establish a successful integrated-main check.
 
 ## Compare Validator authority before changing required CI
 
@@ -99,7 +99,8 @@ Six repository rule sets were subsequently read back and matched the registry:
 BoardNet, StackNet, DisplayNet, Digital Twin Lab, update and viewer. The latter
 two use their existing protected OneDev profiles. All six use strict required
 checks and no configured bypass actors. Eleven other discovered Maskservice
-repositories still require CI adoption compatible with their delivery workflow.
+repositories still require server-side CI enforcement compatible with their
+delivery workflow. The portable policy rollout below does not close that gap.
 
 
 BoardNet [PR #2](https://github.com/maskservice/boardnet-digital-twin/pull/2)
@@ -125,3 +126,44 @@ passes 46 tests, including policy drift and repository/account inheritance.
 The three owned delivery worktrees are released only after exact-head merge
 confirmation, clean tracked state, process checks and private preservation of
 tracked and ignored data. Original unrelated worktrees remain untouched.
+
+## Portable policy and local pre-push rollout
+
+The additional eleven clones (`.github`, `c2004`, `c2004-firmware`, `core`,
+`deploy`, `firmware`, `fleet`, `maskauth`, `rp2040-keyboard`, `stacknet`,
+`workshop`) now have a composed local pre-push check. It checks the committed
+ignore contract and rejects private operational paths in outgoing history,
+including files removed by a later commit. Original hook input and failures
+are preserved. The shared implementation passed 64 behavioral tests, including
+an actual rejected push to a local Git remote.
+
+The reusable workflow is pinned to
+`b1ee98c9cca8070225a9ecf95ef804a5d3936782`, and its implementation checkout to
+`3b82739e039d28c5de8a02974244296b3231fefc`. It validates the committed tree
+without importing target-repository code, using read-only permissions. The
+shared repository runs its own checker and test suite on every push and PR.
+Ten consuming repositories use the reusable workflow on every push and PR.
+
+These checks cover the documented private namespaces and ignore contract.
+They do not certify all Wellmanifest standards or product behavior. CI checks
+the selected tree; the local pre-push guard additionally examines outgoing
+history. Local hooks can still be bypassed, and these eleven repositories do
+not yet require this CI context on the server. Main-only publication in C2004
+and core is preserved. Other dependency clones were not bulk-upgraded to the
+stricter pre-push guard without first auditing their committed ignore contract.
+
+Observed successful runs for the exact rollout commits:
+
+| Repository | Policy CI |
+|---|---|
+| core | [Run 34107568812](https://github.com/maskservice/core/actions/runs/34107568812) |
+| deploy | [Run 34107574620](https://github.com/maskservice/deploy/actions/runs/34107574620) |
+| firmware | [Run 34107579215](https://github.com/maskservice/firmware/actions/runs/34107579215) |
+| fleet | [Run 34107585361](https://github.com/maskservice/fleet/actions/runs/34107585361) |
+| maskauth | [Run 34107592144](https://github.com/maskservice/maskauth/actions/runs/34107592144) |
+| rp2040-keyboard | [Run 34107597504](https://github.com/maskservice/rp2040-keyboard/actions/runs/34107597504) |
+| stacknet | [Run 34107604208](https://github.com/maskservice/stacknet/actions/runs/34107604208) |
+| workshop | [Run 34107608405](https://github.com/maskservice/workshop/actions/runs/34107608405) |
+| c2004-firmware | [Run 34107614694](https://github.com/maskservice/c2004-firmware/actions/runs/34107614694) |
+| c2004 | [Run 34107860853](https://github.com/maskservice/c2004/actions/runs/34107860853) |
+| .github | [Run 34107291765](https://github.com/maskservice/.github/actions/runs/34107291765) |
