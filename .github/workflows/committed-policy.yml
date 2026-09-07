@@ -1,0 +1,23 @@
+name: Committed repository policy
+on:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  source-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out subject
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: subject
+          persist-credentials: false
+      - name: Check out immutable policy implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: maskservice/.github
+          ref: 3b82739e039d28c5de8a02974244296b3231fefc
+          path: policy
+          persist-credentials: false
+      - name: Validate committed operational-data policy
+        run: python3 policy/worktrees/repository_policy.py subject
