@@ -51,7 +51,7 @@ class EnforcementTests(AuditTests):
     def test_runtime_manifest_is_allowed(self):
         path = self.repo / '.subactor/manifest.json'
         path.parent.mkdir()
-        path.write_text('{}')
+        path.write_text(json.dumps({'managedFiles': {'.githooks/pre-commit': '0' * 64}}))
         self.git('add', str(path))
         self.assertEqual(precommit.check(self.repo), [])
 
@@ -76,7 +76,7 @@ class EnforcementTests(AuditTests):
     def test_managed_hooks_path_is_preserved_for_the_official_validator(self):
         path = self.repo / '.governance/manifest.lock.json'
         path.parent.mkdir()
-        path.write_text('{}')
+        path.write_text(json.dumps({'managedFiles': {'.githooks/pre-commit': '0' * 64}}))
         hook = self.repo / '.githooks/pre-commit'
         hook.parent.mkdir()
         hook.write_text('#!/bin/sh\nexit 0\n')
@@ -92,11 +92,56 @@ class EnforcementTests(AuditTests):
         install_hook.install(self.repo)
         path = self.repo / '.governance/manifest.lock.json'
         path.parent.mkdir()
-        path.write_text('{}')
+        path.write_text(json.dumps({'managedFiles': {'.githooks/pre-commit': '0' * 64}}))
         report = install_hook.install(self.repo)
         self.assertFalse(report['managedHookExecutable'])
         self.assertEqual(self.git('config', '--get', 'core.hooksPath').stdout.strip(), '.githooks')
         self.assertIn('managed-precommit-missing', [x['code'] for x in enforcement.observe(self.repo)['findings']])
+
+    def test_legacy_package_gets_guard_without_claiming_full_adoption(self):
+        lock = self.repo / '.governance/manifest.lock.json'
+        lock.parent.mkdir()
+        lock.write_text(json.dumps({'managedFiles': {}}))
+        report = install_hook.install(self.repo)
+        self.assertIn('offlineGuard', report)
+        result = __import__('subprocess').run(['git', '-C', str(self.repo), 'commit', '--allow-empty', '-m', 'legacy'], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        record = enforcement.observe(self.repo)
+        self.assertTrue(record['precommitExecutable'])
+        self.assertIn('managed-host-contract-not-adopted', [x['code'] for x in record['findings']])
+        path = self.repo / '.subactor/cache/private'
+        path.parent.mkdir(parents=True)
+        path.write_text('private')
+        self.git('add', '-f', str(path))
+        result = __import__('subprocess').run(['git', '-C', str(self.repo), 'commit', '-m', 'invalid'], capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('runtime-data-staged', result.stderr)
+
+    def test_legacy_previous_delegation_can_receive_guard(self):
+        self.git('config', 'core.hooksPath', '.githooks')
+        install_hook.install(self.repo)
+        state_path = self.repo / '.git/maskservice-hook-state.json'
+        state = json.loads(state_path.read_text())
+        state['mode'] = 'managed-delegation'
+        state_path.write_text(json.dumps(state))
+        self.git('config', 'core.hooksPath', '.githooks')
+        lock = self.repo / '.governance/manifest.lock.json'
+        lock.parent.mkdir()
+        lock.write_text(json.dumps({'managedFiles': {}}))
+        self.assertIn('offlineGuard', install_hook.install(self.repo))
+
+    def test_staged_ignore_regression_cannot_hide_behind_working_copy(self):
+        ignore = self.repo / '.gitignore'
+        original = ignore.read_text()
+        ignore.write_text(original.replace('/.subactor/cache/\n', ''))
+        self.git('add', '.gitignore')
+        ignore.write_text(original)
+        self.assertIn('ignore-policy-regressed', [x['code'] for x in precommit.check(self.repo)])
+
+    def test_deleting_adopted_ignore_policy_is_blocked(self):
+        self.git('rm', '.gitignore')
+        findings = precommit.check(self.repo)
+        self.assertEqual(len([x for x in findings if x['code'] == 'ignore-policy-regressed']), 7)
 
     def test_foreign_hooks_change_is_preserved(self):
         install_hook.install(self.repo)

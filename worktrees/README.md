@@ -60,14 +60,19 @@ The installer records previous configuration in Git's common directory,
 packages the pinned checker offline, and composes the original hooks without
 rewriting their files. The placement guard rejects commits made from
 noncanonical linked worktrees and staged operational data, including forced
-adds. It preserves commits from the primary checkout even when unrelated
+adds. It also rejects removal of adopted exact operational ignore rules,
+comparing HEAD with the staged `.gitignore` rather than the working copy.
+Legacy missing rules remain audit findings. It preserves commits from the primary checkout even when unrelated
 historical registrations exist. Existing hook failures still block commits.
-For a clone with a managed manifest, the installer delegates to its official
-hook and preserves its original hooksPath: the managed host validator requires
+For a clone whose package owns the host contract or pre-commit, the installer
+delegates to its official hook and preserves its original hooksPath: the managed host validator requires
 that exact path. Refreshing a previously composed managed clone restores the
 recorded original configuration. Missing managed hooks remain audit failures
 and require proper managed adoption; this installer does not fill them with
 a partial replacement or claim that commits are blocked in their absence.
+Older package locks that do not ship a host contract receive the local guard;
+the audit reports `managed-host-contract-not-adopted` until a full upgrade.
+Deleting a pinned contract does not turn a managed clone into a legacy clone.
 
 This is host installation, not a committed replacement for managed
 `new-project` files. Reinstall after updating this package; verify the effective

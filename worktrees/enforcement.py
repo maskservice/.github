@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import subprocess
 
+from hook_contract import owns_hook
 import audit
 
 
@@ -39,7 +40,9 @@ def observe(repo):
     if lock is None:
         findings.append({'code': 'managed-standard-pin-missing'})
     else:
-        if not original_hook.is_file() or not os.access(original_hook, os.X_OK):
+        if not owns_hook(repo):
+            findings.append({'code': 'managed-host-contract-not-adopted'})
+        elif not original_hook.is_file() or not os.access(original_hook, os.X_OK):
             findings.append({'code': 'managed-precommit-missing'})
         for relative, digest in lock.get('managedFiles', {}).items():
             path = repo / relative

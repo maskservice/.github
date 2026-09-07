@@ -21,6 +21,27 @@ def staged_findings(repo):
             continue
         if parts[0] in OPERATIONAL or (len(parts) > 1 and parts[0] == '.subactor' and parts[1] in RUNTIME_PARTS):
             issues.append({'code': 'runtime-data-staged', 'path': name})
+    # Compare the committed and staged versions, not unstaged working files.
+    # Legacy omissions are reported by the auditor; this gate prevents removal
+    # of protection that this repository has already adopted.
+    changed = subprocess.check_output(['git', '-C', str(repo), 'diff', '--cached',
+                                      '--name-only', '-z', '--', '.gitignore'])
+    if changed:
+        def rules(ref):
+            result = subprocess.run(['git', '-C', str(repo), 'show', ref],
+                                    capture_output=True, text=True)
+            if result.returncode:
+                # A new repository/file or staged deletion has no rules.
+                exists = subprocess.run(['git', '-C', str(repo), 'cat-file', '-e', ref],
+                                        capture_output=True)
+                if exists.returncode == 0:
+                    raise OSError('Cannot read ignore policy')
+                return set()
+            return set(result.stdout.splitlines())
+        before, after = rules('HEAD:.gitignore'), rules(':.gitignore')
+        for rule in audit.IGNORES:
+            if rule in before and rule not in after:
+                issues.append({'code': 'ignore-policy-regressed', 'rule': rule})
     return issues
 
 

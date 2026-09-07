@@ -8,6 +8,8 @@ import shutil
 import subprocess
 import sys
 
+from hook_contract import owns_hook
+
 HERE = Path(__file__).resolve().parent
 HOOKS = ('applypatch-msg', 'pre-applypatch', 'post-applypatch', 'pre-commit',
          'pre-merge-commit', 'prepare-commit-msg', 'commit-msg', 'post-commit',
@@ -24,11 +26,12 @@ def install(repo):
     common = Path(git(repo, 'rev-parse', '--path-format=absolute', '--git-common-dir'))
     state_path = common / 'maskservice-hook-state.json'
     hooks = common / 'maskservice-hooks'
+    managed_hook = owns_hook(repo)
     current = subprocess.run(['git', '-C', str(repo), 'config', '--get', 'core.hooksPath'],
                              text=True, capture_output=True).stdout.strip()
     if state_path.exists():
         state = json.loads(state_path.read_text())
-        if current != str(hooks) and not ((repo / '.governance/manifest.lock.json').is_file() and current == state['previousHooksPath']):
+        if current != str(hooks) and not (state.get('mode') == 'managed-delegation' and current == state['previousHooksPath']):
             raise ValueError('hooksPath changed since installation; preserve the new owner')
     else:
         if current == str(hooks) or hooks.exists():
@@ -38,7 +41,7 @@ def install(repo):
     # Full managed adoption owns hooksPath exactly. Its host validator must
     # keep seeing the package's original location; an extra wrapper would
     # otherwise introduce a new conformance error even when it forwards calls.
-    if (repo / '.governance/manifest.lock.json').is_file():
+    if managed_hook:
         previous = state['previousHooksPath']
         if current == str(hooks):
             if previous:
@@ -57,7 +60,7 @@ def install(repo):
     state['mode'] = 'composed'
     snapshot = common / 'maskservice-placement-guard'
     snapshot.mkdir(exist_ok=True)
-    for name in ('precommit.py', 'audit.py'):
+    for name in ('precommit.py', 'audit.py', 'hook_contract.py'):
         shutil.copyfile(HERE / name, snapshot / name)
     shutil.copytree(HERE / 'vendor', snapshot / 'vendor', dirs_exist_ok=True)
     hooks.mkdir(exist_ok=True)
@@ -80,7 +83,9 @@ if not previous.is_absolute():
 hook = previous / name
 if hook.is_file() and os.access(hook, os.X_OK):
     os.execv(str(hook), [str(hook), *sys.argv[1:]])
-if name == 'pre-commit' and (root / '.governance/manifest.lock.json').exists():
+sys.path.insert(0, str(common / 'maskservice-placement-guard'))
+from hook_contract import owns_hook
+if name == 'pre-commit' and owns_hook(root):
     print('MASKSERVICE-PRECOMMIT: declared managed pre-commit is missing or not executable; restore adoption before committing', file=sys.stderr)
     sys.exit(1)
 '''
