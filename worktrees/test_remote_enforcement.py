@@ -70,3 +70,24 @@ class RemoteTests(unittest.TestCase):
     def test_empty_required_check_rule_does_not_satisfy_ci(self):
         rules = remote.POLICY['rules'] + [{'type': 'required_status_checks', 'parameters': {'required_status_checks': []}}]
         self.assertIn('required-status-checks-missing', remote.summarize(rules, None)['findings'])
+
+    def test_registry_drift_identifies_both_sides(self):
+        registry = {'schema': 'subactor.validator/direct-pr-registry/v1', 'version': '1',
+                    'accounts': {'maskservice': {'required_checks': ['onedev/local-verify']}}}
+        result = remote.compare_registry('maskservice/example', ['verify'], registry)
+        self.assertEqual(result['missingOnGitHub'], ['onedev/local-verify'])
+        self.assertEqual(result['missingInRegistry'], ['verify'])
+        self.assertEqual(result['findings'], ['validator-policy-drift'])
+
+    def test_exact_repository_override_wins_over_account(self):
+        registry = {'schema': 'subactor.validator/direct-pr-registry/v1', 'version': '1',
+                    'accounts': {'maskservice': {'required_checks': ['old']}},
+                    'repositories': {'maskservice/example': {'required_checks': ['verify']}}}
+        result = remote.compare_registry('maskservice/example', ['verify'], registry)
+        self.assertEqual(result['findings'], [])
+
+    def test_repository_inherits_unspecified_account_check_list(self):
+        registry = {'schema': 'subactor.validator/direct-pr-registry/v1', 'version': '1',
+                    'accounts': {'maskservice': {'required_checks': ['verify']}},
+                    'repositories': {'maskservice/example': {'scheduled_scan': False}}}
+        self.assertEqual(remote.compare_registry('maskservice/example', ['verify'], registry)['findings'], [])

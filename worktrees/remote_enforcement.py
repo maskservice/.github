@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Audit GitHub enforcement; optionally add non-destructive history protection."""
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -61,6 +62,24 @@ def summarize(rules, classic):
             'bypassCoverage': 'inspect ruleset bypass actors and classic enforce_admins'}
 
 
+def compare_registry(repository, contexts, registry):
+    if registry.get('schema') != 'subactor.validator/direct-pr-registry/v1':
+        raise ValueError('Unsupported protected registry schema')
+    account = registry.get('accounts', {}).get(repository.split('/')[0])
+    override = registry.get('repositories', {}).get(repository)
+    if account is None and override is None:
+        return {'version': registry.get('version'), 'findings': ['validator-policy-missing']}
+    policy = {**(account or {}), **(override or {})}
+    expected = policy.get('required_checks')
+    if not isinstance(expected, list) or not expected or not all(isinstance(c, str) and c for c in expected):
+        raise ValueError('Missing or invalid registry required checks')
+    missing = sorted(set(expected) - set(contexts))
+    extra = sorted(set(contexts) - set(expected))
+    return {'version': registry.get('version'), 'requiredChecks': expected,
+            'missingOnGitHub': missing, 'missingInRegistry': extra,
+            'findings': ['validator-policy-drift'] if missing or extra else []}
+
+
 def observe(repository, request=api):
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
         raise ValueError('Expected OWNER/REPOSITORY')
@@ -101,13 +120,26 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('repositories', nargs='+', help='Explicit OWNER/REPOSITORY targets')
     parser.add_argument('--apply-history-protection', action='store_true')
+    parser.add_argument('--registry', help='Read-only comparison against a trusted Validator JSON registry snapshot')
     args = parser.parse_args()
+    registry = None
+    registry_digest = None
+    if args.registry:
+        from pathlib import Path
+        registry_bytes = Path(args.registry).read_bytes()
+        registry = json.loads(registry_bytes)
+        registry_digest = hashlib.sha256(registry_bytes).hexdigest()
     records = []
     for repository in args.repositories:
         try:
             before = observe(repository)
             change = protect_history(repository) if args.apply_history_protection else None
             after = observe(repository) if change else before
+            if registry is not None:
+                comparison = compare_registry(repository, after['requiredCheckContexts'], registry)
+                comparison['sha256'] = registry_digest
+                after['validatorRegistry'] = comparison
+                after['findings'].extend(comparison['findings'])
             records.append({'before': before, 'change': change, 'after': after})
         except (ApiError, ValueError, KeyError, OSError, subprocess.SubprocessError) as exc:
             records.append({'repository': repository, 'error': str(exc)})
