@@ -26,8 +26,9 @@ python3 /path/to/maskservice/.github/worktrees/audit.py /path/to/maskservice
 
 Exit 0 means no implemented check failed; exit 1 reports findings or errors.
 The audit uses pinned upstream artifacts from the revision in
-`vendor/source.json`. It checks registrations, relative pointers, lease file
-presence and exact ignore rules. It does not authenticate leases or establish
+`vendor/source.json`. It checks registrations, matching branch names, symlinked
+layout components, relative pointers, lease file presence, exact ignore rules
+and whether the runtime manifest is accidentally ignored. It does not authenticate leases or establish
 that work is safe to move or delete. Raw JSON may contain private local paths;
 store it in ignored recovery storage, not Git.
 

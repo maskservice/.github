@@ -40,12 +40,25 @@ def audit(repo):
     for rule in IGNORES:
         if rule not in lines:
             findings.append({'code': 'missing-root-ignore', 'rule': rule})
+    manifest_ignore = subprocess.run(
+        ['git', 'check-ignore', '--no-index', '.subactor/manifest.json'],
+        cwd=primary, capture_output=True, text=True)
+    if manifest_ignore.returncode == 0:
+        findings.append({'code': 'subactor-manifest-ignored'})
+    elif manifest_ignore.returncode != 1:
+        raise OSError('Unable to verify manifest ignore rules')
     for entry in record['entries'][1:]:
         path = Path(entry['path'])
         if entry['classification'] != 'canonical-v5':
             findings.append({'code': 'noncanonical-registration', 'path': str(path),
                              'classification': entry['classification']})
         else:
+            expected_branch = f"ticket/{entry['ticket'][7:]}-{entry['slug']}"
+            if entry['branch'] != expected_branch:
+                findings.append({'code': 'branch-layout-mismatch', 'path': str(path),
+                                 'expectedBranch': expected_branch})
+            if any(component.is_symlink() for component in [path, *path.parents]):
+                findings.append({'code': 'symlinked-layout', 'path': str(path)})
             lease = primary / '.subactor/leases' / (path.name + '.json')
             # Existence is only an observation; this tool does not authenticate ownership.
             entry['leaseExists'] = lease.is_file()

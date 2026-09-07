@@ -54,6 +54,16 @@ class AuditTests(unittest.TestCase):
         self.assertIn('absolute-git-pointer', codes)
         self.assertIn('missing-or-absolute-back-pointer', codes)
 
+    def test_branch_must_match_layout(self):
+        path = self.repo / '.worktrees/ticket-001--test'
+        self.git('worktree', 'add', '--relative-paths', '-b', 'unrelated', str(path))
+        self.assertIn('branch-layout-mismatch', [f['code'] for f in audit.audit(self.repo)['findings']])
+
+    def test_broad_ignore_cannot_hide_manifest(self):
+        with (self.repo / '.gitignore').open('a') as handle:
+            handle.write('/.subactor/\n')
+        self.assertIn('subactor-manifest-ignored', [f['code'] for f in audit.audit(self.repo)['findings']])
+
 
 if __name__ == '__main__':
     unittest.main()
