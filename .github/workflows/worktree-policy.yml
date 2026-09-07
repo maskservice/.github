@@ -1,9 +1,7 @@
 name: Worktree policy
 on:
   push:
-    paths: ['worktrees/**', '.github/workflows/worktree-policy.yml']
   pull_request:
-    paths: ['worktrees/**', '.github/workflows/worktree-policy.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -12,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Check committed operational-data policy
+        run: python3 worktrees/repository_policy.py .
       - name: Verify upstream artifact digests
         run: python3 -c 'import sys; sys.path.insert(0, "worktrees"); import audit; audit.verify_source()'
       - name: Run behavioral guard and hook composition tests

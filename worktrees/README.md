@@ -87,3 +87,19 @@ Use repository-local `.subactor` namespaces for operational working files.
 System-temporary test fixtures do not become delivery worktrees. Existing
 `/tmp` deployment scripts must be migrated by their owning runtime; this
 query-only standard neither deletes their data nor rewrites those scripts.
+
+
+## Committed data and outgoing history
+
+The additional local guard now also checks pre-push. It reads the committed
+`.gitignore` and every outgoing commit's added/modified paths, so an unstaged
+repair or a later removal cannot conceal private operational data in history.
+Original pre-push arguments, input records and exit status are preserved.
+Official managed hooks retain ownership; they are not replaced by this layer.
+
+Run `python3 worktrees/repository_policy.py /path/to/repository --revision HEAD`
+for the portable committed-tree check. It imports no target code. This checks
+private namespaces, the seven exact root ignore rules and common blanket
+runtime ignores. It does not certify product tests, arbitrary ignore-pattern
+semantics, authentic leases, or branch protection. `git push --no-verify` can
+still bypass a local hook; CI and server policy remain separate requirements.

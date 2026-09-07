@@ -60,7 +60,7 @@ def install(repo):
     state['mode'] = 'composed'
     snapshot = common / 'maskservice-placement-guard'
     snapshot.mkdir(exist_ok=True)
-    for name in ('precommit.py', 'audit.py', 'hook_contract.py'):
+    for name in ('precommit.py', 'audit.py', 'hook_contract.py', 'repository_policy.py', 'prepush.py'):
         shutil.copyfile(HERE / name, snapshot / name)
     shutil.copytree(HERE / 'vendor', snapshot / 'vendor', dirs_exist_ok=True)
     hooks.mkdir(exist_ok=True)
@@ -73,6 +73,12 @@ common = Path(__file__).resolve().parent.parent
 state = json.loads((common / 'maskservice-hook-state.json').read_text())
 name = Path(__file__).name
 root = Path(subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], text=True).strip())
+payload = None
+if name == 'pre-push':
+    payload = sys.stdin.buffer.read()
+    result = subprocess.run([sys.executable, str(common / 'maskservice-placement-guard/prepush.py'), *sys.argv[1:]], input=payload)
+    if result.returncode:
+        sys.exit(result.returncode)
 if name == 'pre-commit':
     result = subprocess.run([sys.executable, str(common / 'maskservice-placement-guard/precommit.py')])
     if result.returncode:
@@ -82,6 +88,8 @@ if not previous.is_absolute():
     previous = root / previous
 hook = previous / name
 if hook.is_file() and os.access(hook, os.X_OK):
+    if payload is not None:
+        sys.exit(subprocess.run([str(hook), *sys.argv[1:]], input=payload).returncode)
     os.execv(str(hook), [str(hook), *sys.argv[1:]])
 sys.path.insert(0, str(common / 'maskservice-placement-guard'))
 from hook_contract import owns_hook
