@@ -3,7 +3,7 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "maskservice-wellmanifest-adoption-2026-09-13",
   "kind": "analysis",
-  "version": 2,
+  "version": 3,
   "title": "Adopcja i aktualizacja Wellmanifest w Maskservice",
   "status": "accepted",
   "owner": "maskservice/.github",
@@ -110,7 +110,7 @@ Opublikowane źródła: [new-project v0.20.26](https://github.com/wellmanifest/n
 
 Cztery projekty (`boardnet-digital-twin`, `displaynet`, `maskservice-digital-twin-lab`, `stacknet-digital-twin`) miały pakiet 0.20.9, ale dodatkowo deklarowały 0.18.1 w `.wellmanifest/adoption.json`. Odświeżono pakiet i projekcję do 0.20.26, zachowując status szkiców logs/deployment/twin-lifecycle. `update` otrzymał kandydat 0.20.18 → 0.20.26 oraz aktualny DSL z commita `5f40ad5d228d6301bdbf4bb78e1646ebd3c2b95b`; POA nie wymaga zmiany.
 
-W `.github` worktrees zmieniono z 0.5.1 do 0.5.3, a w C2004 z 0.5.2 do 0.5.3. C2004 otrzymał również aktualne piny logs i git-lifecycle; bajty ich używanych kontraktów pozostały takie same. Docs jest aktualne. `viewer` przechodzi kontrolę PCB 1.23.0, SCH 1.9.0 i procesu POA; lokalne HEAD PCB/SCH są zgodne ze zdalnym main.
+W `.github` worktrees zmieniono z 0.5.1 do 0.5.3, a w C2004 z 0.5.2 do 0.5.3. C2004 otrzymał również aktualne piny logs i git-lifecycle; bajty ich używanych kontraktów pozostały takie same. Docs uzupełniono do 0.2.0 z main `4bd5096e59a4a4b2022949b1a49cba2eb94ed424` (C2004 `46cff7ba5`); formalny Release pozostaje v0.1.0. `viewer` przechodzi kontrolę PCB 1.23.0, SCH 1.9.0 i procesu POA; lokalne HEAD PCB/SCH są zgodne ze zdalnym main.
 
 Przed zmianą nie wykryto okresowego odświeżania pakietów. Cztery stare hooki wywoływały kontroler aktualizacji przy commicie, co nie stanowi dowodu automatycznej publikacji. Pakiet 0.20.26 ma lokalną kontrolę integralności bez pobierania w hooku. Dodano tygodniowe kontrole świeżości do pięciu kandydatów governance, C2004 oraz `.github`. Są to kontrole zgłaszające drift, a nie automatyczne scalanie lub wdrażanie. Harmonogram zacznie działać dopiero po publikacji na gałęzi domyślnej.
 
@@ -122,7 +122,7 @@ Stan kandydatów po publikacji:
 - `displaynet`: `106f76268728`, pushed-pr, `ticket-006`.
 - `maskservice-digital-twin-lab`: `621830250508`, pushed-pr, `ticket-005`.
 - `stacknet-digital-twin`: `32e45abbef47`, pushed-pr, `ticket-007`.
-- `update`: `2ab4b6f798d7`, serialized-recovery-patch, `ticket-090`.
+- `update`: `990945ce0c57`, [PR #138](https://github.com/maskservice/update/pull/138), `ticket-090`.
 
 <!-- docs:section hypotheses -->
 ## Hipotezy
@@ -132,14 +132,14 @@ Nie przypisano samej obecności plików ani harmonogramu do udanej egzekucji zda
 <!-- docs:section limitations -->
 ## Ograniczenia i blokady
 
-Commit `update` blokuje `GOV-WORKTREE-OVERLAP-001/002`: istniejący `ticket-087--oql-scenario-sync` rości zakres `.governance/manifest.json`. [PR #136](https://github.com/maskservice/update/pull/136) ponownie otwarto i odświeżono w ramach kontynuacji; oczekuje na niezależną walidację. Jego HEAD nie jest jeszcze przodkiem main. Zachowano ten checkout i jego historię. Kandydat ticket-090 pozostaje przygotowany, przetestowany i zapisany w prywatnym snapshotcie, bez obejścia hooka.
+Kolizję zakresu `update` rozwiązano przez serializację: niezależny Validator zatwierdził i scalił [PR #136](https://github.com/maskservice/update/pull/136), main `18cf0d4e8aa9`. Odtworzono ticket-090 na tej bazie z zachowaniem nowych właścicieli konfiguracji. Pełna bramka governance, integralność 11 artefaktów i 19 testów kontraktowych/przeglądarkowych przeszły. [PR #138](https://github.com/maskservice/update/pull/138) zaliczył trzy bramki OneDev, lecz niezależny Validator zablokował scalenie: `SEMANTIC_REVIEW_UNRESOLVED`. Kontrolna próba potwierdziła, że upstreamowy `_staleness_only` rozpoznaje ogólną odmowę `GOV-STANDARD-UPDATE-001` jako samą nieaktualność pinu, jeśli staged digests pasują. Naprawa wymaga poprawionego, zatwierdzonego źródła standardu; nie zmieniano ręcznie zarządzanego pliku ani wymagań review. Ten sam pakiet jest kandydatem w czterech pozostałych PR-ach.
 
 Brak finalnych GitHub Releases dla części standardów dziedzinowych nie jest błędem sieci ani dowodem gotowości: piny szkiców pozostają szkicami, a brakujące dokumenty instancji nie zostały wymyślone. Nie potwierdzano ochrony gałęzi ani wykonania nowych workflow na GitHub. Nie wdrażano zmian na urządzeniach.
 
 <!-- docs:section recommendations -->
 ## Dalsze prace
 
-1. Rozstrzygnąć zakres/historię ticket-087 przed commitem i publikacją update/ticket-090.
+1. Poprawić rozpoznawanie odmów Goal w źródle new-project, przyjąć zatwierdzoną wersję i ponownie zweryfikować PR #138 oraz pozostałych adopterów.
 2. Doprowadzić do chronionego scalenia czterech opublikowanych PR-ów governance. OneDev zaliczył ich lokalne bramki; GitHub Actions blokuje rozliczenie konta. `.github` i C2004 są opublikowane.
 3. Dla 10 repozytoriów z samymi instrukcjami zaplanować rzeczywistą adopcję dopasowaną do produktu; nie przedstawiać hostowej polityki worktrees jako pełnego governance.
 4. Viewer aktualizować istniejącym `scripts/standard_check.py --sync` po zmianie opublikowanych źródeł; brak automatycznego publikowania jest jawny.

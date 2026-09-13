@@ -3,7 +3,7 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "maskservice-mcp-refactoring-2026-09-13",
   "kind": "analysis",
-  "version": 4,
+  "version": 5,
   "title": "Dostępność MCP i refaktoryzacja Maskservice",
   "status": "accepted",
   "owner": "maskservice/.github",
@@ -73,7 +73,14 @@ redeploy/update początkowo miał 916 sukcesów i siedem błędów: niezgodny bu
 kontrakt montowania katalogu oraz pięć braków przeglądarki. Istniejące zadanie
 update ticket-087 odświeża bundle do pinu C2004 i poprawia przenośność testu
 zewnętrznego redeploy; 19 testów kontraktowych/przeglądarkowych przechodzi przy
-użyciu dostępnego Chrome. Zmiany wypchnięto i ponownie otwarto PR #136. Validator odrzucił pomijanie testu nieobecnego checkoutu; zastąpiono je wymaganiem rzeczywistej zależności. Sześć testów public-key przechodzi, a nowy HEAD ponownie oczekuje na niezależną walidację. Po doprecyzowaniu właściciela testu i jawnym oznaczeniu fikcyjnego tokena pełna bramka governance dla opublikowanej różnicy przechodzi.
+użyciu dostępnego Chrome. Zmiany wypchnięto i ponownie otwarto PR #136. Validator odrzucił pomijanie testu nieobecnego checkoutu; zastąpiono je wymaganiem rzeczywistej zależności. Sześć testów public-key przechodzi. OneDev zaliczył trzy bramki dla `fd9fc9289f95`; niezależny Validator zatwierdził i scalił PR #136 do main `18cf0d4e8aa9`. Po doprecyzowaniu właściciela testu i jawnym oznaczeniu fikcyjnego tokena pełna bramka governance dla opublikowanej różnicy przechodzi.
+
+
+Dodatkowo usunięto błąd importu w lokalnym środowisku Validatora: odizolowany runtime z deklarowanych zależności używa LiteLLM 1.100.1, OpenAI 2.54.0 i przypiętego SubLLM 1.10.2. Z tym środowiskiem wykonano rzeczywiste review i scalenie #136. Współdzielonego środowiska ani chronionego profilu publikacji nie zmieniano.
+
+Audyt alertów C2004 wskazał Tornado 6.5.8, Mistune 3.3.3 i Vitest 4.1.11 jako wersje naprawcze. Aktualizację OQLTS opublikowano w `autogrammar/oqlts` (`afd1006`): build, kontrola typów i 186 testów przechodzą, 47 wcześniej oznaczonych testów pozostaje skipped. Stare lokalne wyniki kompilacji zawierały osierocone testy; zarchiwizowano je i wykonano czysty build. Powiązane aktualizacje manifestów C2004 i uv.lock opublikowano na main w `f8ea71f87` po zaliczeniu hooków regix/reDUP, kontroli standardów i 25 testów adopcji.
+
+Pełny frontend na Vitest 4.1.11: 2865 testów przechodzi, 13 błędów w czterech plikach. Powtórzenie dokładnie tych czterech plików na odizolowanym Vitest 4.1.7 odtwarza wszystkie 13 błędów (21 sukcesów). Dotyczą starych oczekiwań localStorage, zapamiętanych celów sprzętu i etykiet/wyboru banku wyjść. Nie przywracano zabronionej persystencji w przeglądarce ani nie pomijano tych testów. Pakiety operational-oql (23 testy), frontend-services (25) i logger (6) przechodzą; drzewo zależności Vitest/UI/coverage jest spójne na 4.1.11. W pierwszej obserwacji po push pięć alertów Dependabot nadal miało status open; status zamknięcia wymaga przeliczenia przez GitHub.
 
 <!-- docs:section hypotheses -->
 ## Hipotezy
@@ -85,8 +92,7 @@ Heurystyczne sugestie refaktoryzacji wymagają sprawdzenia zachowania testami. N
 <!-- docs:section limitations -->
 ## Ograniczenia
 
-Aktualizacja standardów update ticket-090 jest wykonywana kolejno po integracji
-ticket-087; zabezpieczono ją patchem z SHA-256. Chronionego review nie zastępuje
+Aktualizację standardów update ticket-090 odtworzono z zabezpieczonego patcha po scaleniu ticket-087. Commit `990945ce0c57` w PR #138 przechodzi pełną bramkę governance, integralność 11 artefaktów i 19 testów; OneDev zaliczył trzy bramki, lecz Validator zablokował scalenie (`SEMANTIC_REVIEW_UNRESOLVED`). Chronionego review nie zastępuje
 samo zaliczenie testów lokalnych. Użytkownik potwierdził rozszerzenie uprawnień maskauth; zmianę opublikowano w `10e535be0c40`. Rozdzielono zasoby pojedynczego wyjścia/dzierżawy i banku wyjść; sześć testów sprawdza dozwolone operacje oraz odmowę dla innych węzłów i niepasujących par capability/resource.
 Same indeksy ticketów Displaynet/laboratorium nie zostały opublikowane: pre-commit odrzuca tracking-only changes (GOV-AGENT-HOST-007); zachowano lokalne pliki. Surowe mapy środowiska, logi planfile i lokalne obrazy dysków nie są dowodem
 gotowości do publikacji kodu. Checkout c20 wskazuje repozytorium zlecenia/c20,
@@ -94,12 +100,14 @@ a jego nieśledzone obrazy dysków przekraczają zwykły limit pliku GitHub.
 
 Próba dodatkowego checkera wellmanifest/docs ujawniła brak formalnej adopcji tego pakietu w `.github` i różnicę własności raportu: sprawdzony wtedy profil 0.1.1 wymagał `subactor/docs` jako domu raportów przekrojowych. Nowszy zaobserwowany main docs 0.2.0 wskazuje `maskservice/report`; takiego repo nie znaleziono w dostępnym katalogu organizacji. Utworzenie i migracja wymagają ustalenia widoczności oraz adopcji/chronionej publikacji tego domu raportów. Poprawiono zgodność nazw plików z ID. Dokumentacja pozostaje raportem organizacji Maskservice; nie deklarujemy pełnej zgodności z tym profilem ani nie zmieniamy jego reguł. C2004 ma odrębną, zweryfikowaną adopcję docs. Uzupełniono ją do polityki 0.2.0 z main `4bd5096e59a4a4b2022949b1a49cba2eb94ed424` (ostatni formalny Release nadal v0.1.0). Preflight miejsca dokumentu, 25 testów adopcji, kontrola 28 dokumentów i hooki przeszły; publikacja C2004: `46cff7ba5`.
 
+
+Validator przeanalizował wszystkie 23 części diffu PR #138 i wskazał błąd w źródłowym pakiecie new-project 0.20.26, w `.governance/precommit_standard_update.py`. `_staleness_only` sprawdza obecność ogólnego tekstu `GOV-STANDARD-UPDATE-001`, a nie jednoznaczny typ odmowy. Przy poprawnych staged digests także kontrolny komunikat o odmowie autoryzacji, niezwiązanej z nieaktualnym pinem, dał `True`. Próba tylko wywołała predykat z syntetycznym `CompletedProcess`; nie uruchomiła Goal ani nie wykonała commita przez ten helper. Zarządzany plik pozostawiono zgodny z oficjalnym SHA. Scalenie wymaga poprawionego źródła standardu i ponownej niezależnej oceny; testy i integralność same w sobie nie rozstrzygają tego błędu.
+
 <!-- docs:section recommendations -->
 ## Dalsze prace
 
 Przywrócić dostępne rozliczenie CI lub uzyskać niezależnie zatwierdzoną zmianę
-chronionego profilu publikacji. Po integracji ticket-087 odtworzyć ticket-090
-na zaakceptowanej bazie i ponownie przeprowadzić oficjalną walidację adopcji.
+chronionego profilu publikacji. Naprawić źródłowy standard new-project i ponownie przeprowadzić chronioną publikację ticket-090 w PR #138.
 Przeładować klienta MCP, aby użył poprawionego profilu. Dalsze refaktoryzacje
 wybierać z konkretnych kontraktów i pomiarów; nie aktualizować mechanicznie
 niezaadoptowanych szkiców standardów ani nie utożsamiać harmonogramu z wykonanym CI.
