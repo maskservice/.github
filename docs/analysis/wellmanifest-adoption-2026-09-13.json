@@ -1,0 +1,859 @@
+{
+  "schema": "maskservice.standards-rollout/v1",
+  "observedAt": "2026-09-13T15:00:10.350890+00:00",
+  "scope": "explicit repository or immediate Git checkouts; nested submodules excluded",
+  "primaryCheckouts": [
+    {
+      "repository": ".github",
+      "head": "5606150512999746206c031e31446aaed5a4b35b",
+      "pins": [
+        {
+          "package": "wellmanifest/worktrees",
+          "revision": "57bcd6b6f5d266fa9952824f1d89d4d45d8a386d",
+          "version": "0.5.3",
+          "source": "worktrees/vendor/source.json",
+          "kind": "vendored",
+          "freshness": "matches-final-release"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "01.mask.services",
+      "head": "3fa6bc8c0a19de832543c8acf2376f23fd47d223",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "1001.mask.services",
+      "head": "a1fcaa10b5ea480798cc7e0a0209728a180e9c97",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "C2003",
+      "head": "1480bbc448f32e271f04b3166b6964e0ef5dee85",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "boardnet-digital-twin",
+      "head": "3f7c8a7e5b3847c313e0c599f48b35bdf0c4fc17",
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "6f302b389b03515e62d4e3ee9d88beb63a89bdcc",
+          "version": "0.20.9",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "16f7aea148a7f979e5c5abdfd4bc112224904d36",
+          "version": "0.18.1",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "adopted",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/logs",
+          "revision": "4c235afecdf2c6f4da41fce98293e71228ae93b3",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned",
+          "freshness": "no-final-release"
+        },
+        {
+          "package": "wellmanifest/twin-lifecycle",
+          "revision": "d556831ee109655d257e99cc14456599d68c3bbc",
+          "version": "1.0.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned",
+          "freshness": "no-final-release"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": true,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": [
+        {
+          "code": "adoption-metadata-disagrees-with-lock",
+          "package": "wellmanifest/new-project"
+        }
+      ]
+    },
+    {
+      "repository": "c20",
+      "head": "e31e11ec2d21c4477c5f3492f0b4bddae6351ac5",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "c2002",
+      "head": "cc4ca89391ced160d42adebf428c2356442f0635",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "c2004",
+      "head": "20f44ff8dd1e1f38d3b4f3fd2648cdc8c7837af5",
+      "pins": [
+        {
+          "package": "wellmanifest/git-lifecycle",
+          "revision": "37a1fe04d9f3e9ca021018ed85790886c9827cc9",
+          "version": "0.2.0-dev",
+          "source": ".governance/wellmanifest.lock.json",
+          "kind": "vendored",
+          "freshness": "no-final-release"
+        },
+        {
+          "package": "wellmanifest/worktrees",
+          "revision": "57bcd6b6f5d266fa9952824f1d89d4d45d8a386d",
+          "version": "0.5.3",
+          "source": ".governance/wellmanifest.lock.json",
+          "kind": "vendored",
+          "freshness": "matches-final-release"
+        },
+        {
+          "package": "wellmanifest/logs",
+          "revision": "2727b2220ccfac521f98c6c464af766f2df9f63d",
+          "version": "0.5.0",
+          "source": ".governance/wellmanifest.lock.json",
+          "kind": "vendored",
+          "freshness": "no-final-release"
+        },
+        {
+          "package": "wellmanifest/docs",
+          "revision": "25cf4cbe0124ce41bff7b1497badaa2b3662b707",
+          "version": "0.1.1",
+          "source": ".governance/wellmanifest.lock.json",
+          "kind": "vendored",
+          "freshness": "differs-from-final-release"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "c2004-firmware",
+      "head": "ee55307bd103fcdae73f18f759a6867c43d4e723",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "c201001.mask.services",
+      "head": "b2098babce1559ce7b13d366ac5c0a8501b428a5",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "c20frame3",
+      "head": "9e3162d099ddf7095beab964c9d2985dbdaa5ec7",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "c20frame4",
+      "head": "f01adc2c87a55e8b9c604a563ac94f08a1c73948",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "cm",
+      "head": "7de20dbee5ba63fa0c2c8923a30cc65c79f2e5d6",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "core",
+      "head": "a82238d3aad4e8084d8ae4be220b50403387c6b1",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "cpp",
+      "head": "59a6f97b9a86c6e76124ca636efbc51c79949b44",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "deploy",
+      "head": "a955218160d4a6fed494a31d736c0e6047c9c740",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "displaynet",
+      "head": "0a2100cfd73e82401531caae770c299ecba0e080",
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "6f302b389b03515e62d4e3ee9d88beb63a89bdcc",
+          "version": "0.20.9",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "16f7aea148a7f979e5c5abdfd4bc112224904d36",
+          "version": "0.18.1",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "adopted",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/logs",
+          "revision": "4c235afecdf2c6f4da41fce98293e71228ae93b3",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned",
+          "freshness": "no-final-release"
+        },
+        {
+          "package": "wellmanifest/deployment",
+          "revision": "6aab422b5e662815dcb911ffd81a412340864d76",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned",
+          "freshness": "no-final-release"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": true,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": [
+        {
+          "code": "adoption-metadata-disagrees-with-lock",
+          "package": "wellmanifest/new-project"
+        }
+      ]
+    },
+    {
+      "repository": "firmware",
+      "head": "e08c6a02612546abae58d47ffc0d0f74b9411ec4",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "fleet",
+      "head": "fe01c355e4329fd30b2d45ed17331b62bce2ad31",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "maskauth",
+      "head": "fac606b3e9765b4fa5baff6d5f041b03638b3924",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "maskservice-digital-twin-lab",
+      "head": "c716ddaa702008cf364b43fa2372a0bdfdf067b5",
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "6f302b389b03515e62d4e3ee9d88beb63a89bdcc",
+          "version": "0.20.9",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "16f7aea148a7f979e5c5abdfd4bc112224904d36",
+          "version": "0.18.1",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "adopted",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/logs",
+          "revision": "4c235afecdf2c6f4da41fce98293e71228ae93b3",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned",
+          "freshness": "no-final-release"
+        },
+        {
+          "package": "wellmanifest/deployment",
+          "revision": "6aab422b5e662815dcb911ffd81a412340864d76",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned",
+          "freshness": "no-final-release"
+        },
+        {
+          "package": "wellmanifest/twin-lifecycle",
+          "revision": "d556831ee109655d257e99cc14456599d68c3bbc",
+          "version": "1.0.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned",
+          "freshness": "no-final-release"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": true,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": [
+        {
+          "code": "adoption-metadata-disagrees-with-lock",
+          "package": "wellmanifest/new-project"
+        }
+      ]
+    },
+    {
+      "repository": "redeploy",
+      "head": "694fb986217983c39af6c8e2c5fd7717eb77f2b9",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "rp2040-keyboard",
+      "head": "2748dea22914fb48586b597f834147f63f1a3336",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "stacknet",
+      "head": "ff1ecea37c641eb4a6c78df0e72f8bad7c9ac4e8",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "stacknet-digital-twin",
+      "head": "8ee1e354fe64af46fee3319267492cae88652aa2",
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "6f302b389b03515e62d4e3ee9d88beb63a89bdcc",
+          "version": "0.20.9",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "16f7aea148a7f979e5c5abdfd4bc112224904d36",
+          "version": "0.18.1",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "adopted",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/logs",
+          "revision": "4c235afecdf2c6f4da41fce98293e71228ae93b3",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned",
+          "freshness": "no-final-release"
+        },
+        {
+          "package": "wellmanifest/twin-lifecycle",
+          "revision": "d556831ee109655d257e99cc14456599d68c3bbc",
+          "version": "1.0.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned",
+          "freshness": "no-final-release"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": true,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": [
+        {
+          "code": "adoption-metadata-disagrees-with-lock",
+          "package": "wellmanifest/new-project"
+        }
+      ]
+    },
+    {
+      "repository": "update",
+      "head": "2ab4b6f798d7bfc99f59ff4ad2c2a6543d77ba82",
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "1ed06dfe0b7c05be0c56c0c5aa4610ec103434e8",
+          "version": "0.20.18",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "1ed06dfe0b7c05be0c56c0c5aa4610ec103434e8",
+          "version": "0.20.18",
+          "source": "standards/standards-lock.json",
+          "kind": "published",
+          "freshness": "differs-from-final-release"
+        },
+        {
+          "package": "wellmanifest/dsl",
+          "revision": "c0eee550fc1e38186d8832b4d85d6d717f4046cc",
+          "version": "0.1.0-dev",
+          "source": "standards/standards-lock.json",
+          "kind": "draft",
+          "freshness": "no-final-release"
+        },
+        {
+          "package": "wellmanifest/poa",
+          "revision": "18215639f674966754c00d9188efe571e07cb219",
+          "version": "0.1.0",
+          "source": "standards/standards-lock.json",
+          "kind": "draft",
+          "freshness": "no-final-release"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "viewer",
+      "head": "a8bf49138e5f6954aeca3d7e8fbb1df1342784d8",
+      "pins": [
+        {
+          "package": "wellmanifest/pcb",
+          "revision": null,
+          "version": "1.23.0",
+          "source": "app/standards/wellmanifest-pcb.standard.json",
+          "kind": "vendored-unpinned",
+          "freshness": "no-final-release"
+        },
+        {
+          "package": "wellmanifest/sch",
+          "revision": null,
+          "version": "1.9.0",
+          "source": "app/standards/wellmanifest-sch.standard.json",
+          "kind": "vendored-unpinned",
+          "freshness": "no-final-release"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "wiki",
+      "head": "476d1a12b06378e18527951f5b0a7cbcb691583b",
+      "pins": [],
+      "adoption": "not-detected",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    },
+    {
+      "repository": "workshop",
+      "head": "48f571c3afabe63b11891fc497a19a920206e27d",
+      "pins": [],
+      "adoption": "instructions-only",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": []
+    }
+  ],
+  "upstream": {
+    "wellmanifest/deployment": {
+      "status": "no-final-release"
+    },
+    "wellmanifest/docs": {
+      "status": "final-release",
+      "tag": "v0.1.0",
+      "revision": "fdb0fcaa7c606dc2503cabb71eff64d5f86ee659",
+      "publishedAt": "2026-09-05T20:20:09Z",
+      "url": "https://github.com/wellmanifest/docs/releases/tag/v0.1.0"
+    },
+    "wellmanifest/dsl": {
+      "status": "no-final-release"
+    },
+    "wellmanifest/git-lifecycle": {
+      "status": "no-final-release"
+    },
+    "wellmanifest/logs": {
+      "status": "no-final-release"
+    },
+    "wellmanifest/new-project": {
+      "status": "final-release",
+      "tag": "v0.20.26",
+      "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+      "publishedAt": "2026-09-13T10:51:30Z",
+      "url": "https://github.com/wellmanifest/new-project/releases/tag/v0.20.26"
+    },
+    "wellmanifest/pcb": {
+      "status": "no-final-release"
+    },
+    "wellmanifest/poa": {
+      "status": "no-final-release"
+    },
+    "wellmanifest/sch": {
+      "status": "no-final-release"
+    },
+    "wellmanifest/twin-lifecycle": {
+      "status": "no-final-release"
+    },
+    "wellmanifest/worktrees": {
+      "status": "final-release",
+      "tag": "v0.5.3",
+      "revision": "57bcd6b6f5d266fa9952824f1d89d4d45d8a386d",
+      "publishedAt": "2026-09-10T09:47:24Z",
+      "url": "https://github.com/wellmanifest/worktrees/releases/tag/v0.5.3"
+    }
+  },
+  "candidates": [
+    {
+      "repository": "boardnet-digital-twin",
+      "head": "d101e1a0fb972b16cbd1aecb5bfcc742b4708820",
+      "workingTreeDirty": false,
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "adopted"
+        },
+        {
+          "package": "wellmanifest/logs",
+          "revision": "4c235afecdf2c6f4da41fce98293e71228ae93b3",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned"
+        },
+        {
+          "package": "wellmanifest/twin-lifecycle",
+          "revision": "d556831ee109655d257e99cc14456599d68c3bbc",
+          "version": "1.0.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [
+        ".github/workflows/wellmanifest-freshness.yml"
+      ],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": [],
+      "ticket": "ticket-007",
+      "delivery": "local-commit"
+    },
+    {
+      "repository": "displaynet",
+      "head": "106f762687285cf3866840cf8829437d1fcb5b2e",
+      "workingTreeDirty": false,
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "adopted"
+        },
+        {
+          "package": "wellmanifest/logs",
+          "revision": "4c235afecdf2c6f4da41fce98293e71228ae93b3",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned"
+        },
+        {
+          "package": "wellmanifest/deployment",
+          "revision": "6aab422b5e662815dcb911ffd81a412340864d76",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [
+        ".github/workflows/wellmanifest-freshness.yml"
+      ],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": [],
+      "ticket": "ticket-006",
+      "delivery": "local-commit"
+    },
+    {
+      "repository": "maskservice-digital-twin-lab",
+      "head": "621830250508f481eaf7bc73dddb1c608c6d1165",
+      "workingTreeDirty": false,
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "adopted"
+        },
+        {
+          "package": "wellmanifest/logs",
+          "revision": "4c235afecdf2c6f4da41fce98293e71228ae93b3",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned"
+        },
+        {
+          "package": "wellmanifest/deployment",
+          "revision": "6aab422b5e662815dcb911ffd81a412340864d76",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned"
+        },
+        {
+          "package": "wellmanifest/twin-lifecycle",
+          "revision": "d556831ee109655d257e99cc14456599d68c3bbc",
+          "version": "1.0.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [
+        ".github/workflows/wellmanifest-freshness.yml"
+      ],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": [],
+      "ticket": "ticket-005",
+      "delivery": "local-commit"
+    },
+    {
+      "repository": "stacknet-digital-twin",
+      "head": "32e45abbef47316408d7ea2e243d123613f9676c",
+      "workingTreeDirty": false,
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "adopted"
+        },
+        {
+          "package": "wellmanifest/logs",
+          "revision": "4c235afecdf2c6f4da41fce98293e71228ae93b3",
+          "version": "0.1.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned"
+        },
+        {
+          "package": "wellmanifest/twin-lifecycle",
+          "revision": "d556831ee109655d257e99cc14456599d68c3bbc",
+          "version": "1.0.0-dev",
+          "source": ".wellmanifest/adoption.json",
+          "kind": "pinned"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [
+        ".github/workflows/wellmanifest-freshness.yml"
+      ],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": [],
+      "ticket": "ticket-007",
+      "delivery": "local-commit"
+    },
+    {
+      "repository": "update",
+      "head": "2ab4b6f798d7bfc99f59ff4ad2c2a6543d77ba82",
+      "workingTreeDirty": true,
+      "pins": [
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": ".governance/manifest.lock.json",
+          "kind": "managed"
+        },
+        {
+          "package": "wellmanifest/new-project",
+          "revision": "8d86cd61404d51809532a8292ce9c0cc02ed6157",
+          "version": "0.20.26",
+          "source": "standards/standards-lock.json",
+          "kind": "published"
+        },
+        {
+          "package": "wellmanifest/dsl",
+          "revision": "5f40ad5d228d6301bdbf4bb78e1646ebd3c2b95b",
+          "version": "0.1.0-dev",
+          "source": "standards/standards-lock.json",
+          "kind": "draft"
+        },
+        {
+          "package": "wellmanifest/poa",
+          "revision": "18215639f674966754c00d9188efe571e07cb219",
+          "version": "0.1.0",
+          "source": "standards/standards-lock.json",
+          "kind": "draft"
+        }
+      ],
+      "adoption": "artifacts",
+      "precommitUpdateController": false,
+      "scheduledFreshness": [
+        ".github/workflows/wellmanifest-freshness.yml"
+      ],
+      "automaticPublication": "not-established",
+      "remoteEnforcement": "not-observed",
+      "findings": [],
+      "ticket": "ticket-090",
+      "delivery": "staged-blocked-by-ticket-087"
+    }
+  ]
+}

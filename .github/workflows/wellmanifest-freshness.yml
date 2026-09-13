@@ -1,0 +1,27 @@
+name: Wellmanifest freshness
+on:
+  schedule:
+    - cron: '31 4 * * 1'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'worktrees/**'
+      - '.github/workflows/wellmanifest-freshness.yml'
+permissions:
+  contents: read
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s worktrees -p 'test_*.py' -q
+      - name: Compare with the final annotated release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python worktrees/refresh_standard.py .

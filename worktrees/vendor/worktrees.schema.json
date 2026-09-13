@@ -8,14 +8,13 @@
   ],
   "$defs": {
     "repositoryName": {
-      "type": "string",
-      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      "$ref": "#/$defs/observedRepositoryName"
     },
     "observedRepositoryName": {
       "type": "string",
       "minLength": 1,
       "not": {"enum": [".", ".."]},
-      "pattern": "^[^/\\\\\\u0000]+$"
+      "pattern": "^[^/\\\\\\^@]+$"
     },
     "ticket": {
       "type": "string",
