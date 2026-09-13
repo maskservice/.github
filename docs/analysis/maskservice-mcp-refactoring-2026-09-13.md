@@ -3,7 +3,7 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "maskservice-mcp-refactoring-2026-09-13",
   "kind": "analysis",
-  "version": 5,
+  "version": 6,
   "title": "Dostępność MCP i refaktoryzacja Maskservice",
   "status": "accepted",
   "owner": "maskservice/.github",
@@ -81,6 +81,15 @@ Dodatkowo usunięto błąd importu w lokalnym środowisku Validatora: odizolowan
 Audyt alertów C2004 wskazał Tornado 6.5.8, Mistune 3.3.3 i Vitest 4.1.11 jako wersje naprawcze. Aktualizację OQLTS opublikowano w `autogrammar/oqlts` (`afd1006`): build, kontrola typów i 186 testów przechodzą, 47 wcześniej oznaczonych testów pozostaje skipped. Stare lokalne wyniki kompilacji zawierały osierocone testy; zarchiwizowano je i wykonano czysty build. Powiązane aktualizacje manifestów C2004 i uv.lock opublikowano na main w `f8ea71f87` po zaliczeniu hooków regix/reDUP, kontroli standardów i 25 testów adopcji.
 
 Pełny frontend na Vitest 4.1.11: 2865 testów przechodzi, 13 błędów w czterech plikach. Powtórzenie dokładnie tych czterech plików na odizolowanym Vitest 4.1.7 odtwarza wszystkie 13 błędów (21 sukcesów). Dotyczą starych oczekiwań localStorage, zapamiętanych celów sprzętu i etykiet/wyboru banku wyjść. Nie przywracano zabronionej persystencji w przeglądarce ani nie pomijano tych testów. Pakiety operational-oql (23 testy), frontend-services (25) i logger (6) przechodzą; drzewo zależności Vitest/UI/coverage jest spójne na 4.1.11. Po przeliczeniu zależności GitHub potwierdził status `fixed` dla wszystkich pięciu alertów Dependabot (#212–#216).
+
+
+Kontynuacja przez USB: Stacknet `10:51:DB:41:2F:64` miał aplikację 1.12.0 z commita `ff1ecea37c641eb4a6c78df0e72f8bad7c9ac4e8`. Sama zmiana polityki MaskAuth nie wymaga firmware, lecz osobna poprawka autoryzacji DRI0050 z `ef4a9bd68d3b2e4239b0ed62862a35cd14d1eef3` wymagała wgrania. Zbudowano ten czysty commit z profilem `cores3se-usb-module-motors`; 105 testów i 80 podtestów przeszło. Przed zapisem odczytano pełne 16 MiB flash do prywatnej kopii (SHA-256 `29b340b9e27830a5a64a8c6efcd8c1739a2cf2e3c9a9981c65ebc2e75817beec`). Obraz aplikacji ma SHA-256 `bb818cb21b808cd7ebd4f2b413b8c244566f2db9701aad94ad670450e6cbb8a9`. Układ partycji jest identyczny; zakres zapisu nie obejmował NVS.
+
+Esptool zweryfikował hash zapisanych segmentów. Standardowy reset USB pozostawiał układ w DOWNLOAD; obsługiwany przez zainstalowany esptool reset watchdogiem uruchomił aplikację. Rozpoznanie trybu startu opisuje [dokumentacja Espressif](https://docs.espressif.com/projects/esptool/en/latest/esp32s3/advanced-topics/boot-mode-selection.html). Po kolejnym starcie i potwierdzeniu przez użytkownika podłączenia całego zestawu, rzeczywiste OQL API zgłosiło `healthy: true`, ten sam commit, 16 wyjść, oba M122 (`0x45`, `0x66`) z zerem błędów odczytu, zgodny kontrakt oraz brak brakujących wymaganych peryferiów. LAN: `192.168.188.224`, Wi-Fi: `192.168.188.163`. To dowód działania aplikacji i odczytów; nie wykonano poleceń wyjść ani silników.
+
+Przeładowano tylko kontener `c2004-maskauth-1`, aby zastosować wersjonowaną politykę. Rzeczywiste żądania usługi Displaynet zwracają 200 dla OUT1, OUT16 i dwóch operacji banku oraz 403 dla BoardNet i niepasującej pary capability/resource. Tokeny nie zostały opublikowane ani wysłane do sprzętu. Fingerprint klucza publicznego MaskAuth zgadza się z kluczem raportowanym przez Stacknet; gotowość podpisywania ES256 jest potwierdzona.
+
+Próba kontynuacji naprawy źródłowego new-project potwierdziła brak nowszego źródła niż `8d86cd6`. Kontrola dla konkretnych plików dopuszczała nowy zakres, ale oficjalny allocator, badający cały zakres `**`, odmówił rezerwacji ticketu (`GOV-WORK-START-001`) z powodu istniejących pending/unassigned branches i checkoutów. Nie użyto force-new, nie zmieniano obcych plików ani zarządzanych kopii adopterów. Błąd helpera i ta przeszkoda wymagają kontynuacji w poprawnie przydzielonym zakresie źródłowego standardu.
 
 <!-- docs:section hypotheses -->
 ## Hipotezy
