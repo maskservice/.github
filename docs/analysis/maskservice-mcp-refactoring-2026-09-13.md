@@ -3,7 +3,7 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "maskservice-mcp-refactoring-2026-09-13",
   "kind": "analysis",
-  "version": 2,
+  "version": 3,
   "title": "Dostępność MCP i refaktoryzacja Maskservice",
   "status": "accepted",
   "owner": "maskservice/.github",
@@ -68,7 +68,7 @@ bramki; GitHub Actions nie uruchamia zadań z powodu rozliczeń konta. Niezależ
 Validator dla boardnet #3 odmówił scalenia, ponieważ chronione wymagania nadal
 obejmują niezaliczone kontrole hostowane. Nie zmieniono tych wymagań.
 
-`stacknet` opublikowano po 105 testach, `redeploy` po 24 testach. Szeroki test
+`stacknet` opublikowano po 105 testach (`ef4a9bd68d3b`), `redeploy` po 24 testach (`548065bf085e`). Poprawkę odświeżania discovery opublikowano w submodule connect-scenario (`1934753`, 15 testów), a jego pin i port maskauth w C2004 (`16386c849e8f`). Hooki regix/redup oraz kontrola 28 dokumentów i 61 strumieni/201 zdarzeń C2004 przeszły; wup nie raportuje problemów. Szeroki test
 redeploy/update początkowo miał 916 sukcesów i siedem błędów: niezgodny bundle,
 kontrakt montowania katalogu oraz pięć braków przeglądarki. Istniejące zadanie
 update ticket-087 odświeża bundle do pinu C2004 i poprawia przenośność testu
@@ -80,7 +80,7 @@ użyciu dostępnego Chrome. Zmiany wypchnięto i ponownie otwarto PR #136. Po do
 
 Naprawy obrazu NLP powinny trafić do źródłowego Dockerfile NLP2DSL; obecny adapter
 wdrożenia pozwala używać MCP, ale nie stanowi wydania poprawionego upstreamu.
-Heurystyczne sugestie refaktoryzacji wymagają sprawdzenia zachowania testami.
+Heurystyczne sugestie refaktoryzacji wymagają sprawdzenia zachowania testami. NLP2CMD dla bogatszego zapytania `Find Python files` zwrócił niską pewność 0.148 i plan z wildcardem `*`, bez zawężenia do `.py`; prosty test dostępności nie dowodzi poprawności dowolnego polecenia naturalnego.
 
 <!-- docs:section limitations -->
 ## Ograniczenia
