@@ -18,9 +18,8 @@ def read(root, path):
     return json.loads(file.read_text()) if file.is_file() else {}
 
 
-def observe(root):
-    root = Path(root).resolve()
-    tracked = set(git(root, 'ls-files').splitlines())
+def collect_pins(root):
+    """Read adoption evidence and check managed bytes without Git or network effects."""
     pins, findings = [], []
 
     def pin(package, revision, version, source, kind):
@@ -60,6 +59,11 @@ def observe(root):
         if item:
             pin(f'wellmanifest/{pack}', None, item['version'], path, 'vendored-unpinned')
 
+    return pins, findings
+
+
+def update_wiring(root, tracked):
+    """Observe scheduled checks and the effective hook, not successful execution."""
     workflows = {path: (root / path).read_text() for path in tracked
                  if path.startswith('.github/workflows/') and path.endswith(('.yml', '.yaml'))
                  and (root / path).is_file()}
@@ -73,6 +77,14 @@ def observe(root):
     hook = hook_path.read_text() if hook_path.is_file() else ''
     policy = read(root, '.governance/standard-adoption.json').get('updates', {})
     hook_update = bool(policy.get('enabled') and 'run_standard_update_controller' in hook)
+    return hook_update, freshness
+
+
+def observe(root):
+    root = Path(root).resolve()
+    tracked = set(git(root, 'ls-files').splitlines())
+    pins, findings = collect_pins(root)
+    hook_update, freshness = update_wiring(root, tracked)
     refs = git(root, 'grep', '-l', '-i', 'wellmanifest', '--', 'AGENTS.md') if 'AGENTS.md' in tracked and 'wellmanifest' in (root / 'AGENTS.md').read_text().lower() else ''
     return dict(repository=root.name, head=git(root, 'rev-parse', 'HEAD'),
                 workingTreeDirty=bool(git(root, 'status', '--porcelain')), pins=pins,

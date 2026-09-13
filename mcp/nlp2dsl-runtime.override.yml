@@ -1,0 +1,3 @@
+services:
+  nlp-service:
+    image: maskservice/nlp2dsl-nlp-service:mcp
