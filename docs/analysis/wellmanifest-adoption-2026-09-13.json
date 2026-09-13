@@ -855,5 +855,17 @@
       "ticket": "ticket-090",
       "delivery": "staged-blocked-by-ticket-087"
     }
-  ]
+  ],
+  "completedPrimaryCommits": {
+    "maskservice/.github": "c6a8117",
+    "maskservice/c2004": "e4410c5282648628d532a2ffa52cd7eaa319f246"
+  },
+  "publication": {
+    "maskservice/c2004": {
+      "branch": "main",
+      "commit": "e4410c5282648628d532a2ffa52cd7eaa319f246",
+      "status": "pushed"
+    },
+    "otherChanges": "local-only; update commit blocked by ticket-087"
+  }
 }

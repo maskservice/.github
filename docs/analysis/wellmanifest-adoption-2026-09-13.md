@@ -114,7 +114,7 @@ W `.github` worktrees zmieniono z 0.5.1 do 0.5.3, a w C2004 z 0.5.2 do 0.5.3. C2
 
 Przed zmianą nie wykryto okresowego odświeżania pakietów. Cztery stare hooki wywoływały kontroler aktualizacji przy commicie, co nie stanowi dowodu automatycznej publikacji. Pakiet 0.20.26 ma lokalną kontrolę integralności bez pobierania w hooku. Dodano tygodniowe kontrole świeżości do pięciu kandydatów governance, C2004 oraz `.github`. Są to kontrole zgłaszające drift, a nie automatyczne scalanie lub wdrażanie. Harmonogram zacznie działać dopiero po publikacji na gałęzi domyślnej.
 
-Walidacja: 97 testów narzędzi organizacji; 30 testów adopcji/logów C2004; po 3 testy twinów i lint; walidacja topologii Displaynet/laboratorium; kontrola standardów `update` oraz 24 testy DSL. Pięć bramek governance przeszło dla lokalnych zmian. Pełna bramka C2004 potwierdziła 28 dokumentów oraz 61 strumieni / 201 zdarzeń logów.
+Walidacja: 97 testów narzędzi organizacji; 30 testów adopcji/logów C2004; po 3 testy twinów i lint; walidacja topologii Displaynet/laboratorium; kontrola standardów `update` oraz 24 testy DSL. Pięć bramek governance przeszło dla lokalnych zmian. Pełna bramka C2004 potwierdziła 28 dokumentów oraz 61 strumieni / 201 zdarzeń logów. Hooki C2004 (w tym regix i redup) przeszły; zmiana została wypchnięta na `main` w commicie `e4410c528`. Zweryfikowano również składnię YAML i shell wszystkich siedmiu nowych workflow.
 
 Stan lokalnych kandydatów:
 
@@ -140,7 +140,7 @@ Brak finalnych GitHub Releases dla części standardów dziedzinowych nie jest b
 ## Dalsze prace
 
 1. Rozstrzygnąć zakres/historię ticket-087 przed commitem i publikacją update/ticket-090.
-2. Opublikować zweryfikowane lokalne commity zgodnie z regułami każdego repozytorium i sprawdzić pierwszy przebieg harmonogramu.
+2. Opublikować zweryfikowane lokalne commity czterech projektów governance oraz `.github` zgodnie z regułami każdego repozytorium i sprawdzić pierwszy przebieg harmonogramu. C2004 jest już opublikowane.
 3. Dla 10 repozytoriów z samymi instrukcjami zaplanować rzeczywistą adopcję dopasowaną do produktu; nie przedstawiać hostowej polityki worktrees jako pełnego governance.
 4. Viewer aktualizować istniejącym `scripts/standard_check.py --sync` po zmianie opublikowanych źródeł; brak automatycznego publikowania jest jawny.
 
