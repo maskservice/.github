@@ -3,14 +3,14 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "maskservice-mcp-refactoring-2026-09-13",
   "kind": "analysis",
-  "version": 3,
+  "version": 4,
   "title": "Dostępność MCP i refaktoryzacja Maskservice",
   "status": "accepted",
   "owner": "maskservice/.github",
   "created": "2026-09-13",
   "updated": "2026-09-13",
   "review_after": "2026-09-20",
-  "source_revision": "00ea472c9dbad3eab461da6f3bac26a64641fb7a",
+  "source_revision": "f76b9f16df8400accffb4fa52692ba5c47606c23",
   "affected_repositories": ["maskservice/.github", "maskservice/update", "maskservice/redeploy", "maskservice/stacknet", "maskservice/c2004", "maskservice/maskauth"],
   "evidence": ["repo://maskservice/.github/mcp/smoke.py", "repo://maskservice/.github/mcp/test_contracts.py", "repo://maskservice/.github/worktrees/standards.py"]
 }
@@ -73,7 +73,7 @@ redeploy/update początkowo miał 916 sukcesów i siedem błędów: niezgodny bu
 kontrakt montowania katalogu oraz pięć braków przeglądarki. Istniejące zadanie
 update ticket-087 odświeża bundle do pinu C2004 i poprawia przenośność testu
 zewnętrznego redeploy; 19 testów kontraktowych/przeglądarkowych przechodzi przy
-użyciu dostępnego Chrome. Zmiany wypchnięto i ponownie otwarto PR #136. Po doprecyzowaniu właściciela testu i jawnym oznaczeniu fikcyjnego tokena pełna bramka governance dla opublikowanej różnicy przechodzi.
+użyciu dostępnego Chrome. Zmiany wypchnięto i ponownie otwarto PR #136. Validator odrzucił pomijanie testu nieobecnego checkoutu; zastąpiono je wymaganiem rzeczywistej zależności. Sześć testów public-key przechodzi, a nowy HEAD ponownie oczekuje na niezależną walidację. Po doprecyzowaniu właściciela testu i jawnym oznaczeniu fikcyjnego tokena pełna bramka governance dla opublikowanej różnicy przechodzi.
 
 <!-- docs:section hypotheses -->
 ## Hipotezy
@@ -87,13 +87,12 @@ Heurystyczne sugestie refaktoryzacji wymagają sprawdzenia zachowania testami. N
 
 Aktualizacja standardów update ticket-090 jest wykonywana kolejno po integracji
 ticket-087; zabezpieczono ją patchem z SHA-256. Chronionego review nie zastępuje
-samo zaliczenie testów lokalnych. W maskauth zastana zmiana uprawnień wyjść
-narusza istniejący test zakresu; intencja rozszerzenia wymaga rozstrzygnięcia.
+samo zaliczenie testów lokalnych. Użytkownik potwierdził rozszerzenie uprawnień maskauth; zmianę opublikowano w `10e535be0c40`. Rozdzielono zasoby pojedynczego wyjścia/dzierżawy i banku wyjść; sześć testów sprawdza dozwolone operacje oraz odmowę dla innych węzłów i niepasujących par capability/resource.
 Same indeksy ticketów Displaynet/laboratorium nie zostały opublikowane: pre-commit odrzuca tracking-only changes (GOV-AGENT-HOST-007); zachowano lokalne pliki. Surowe mapy środowiska, logi planfile i lokalne obrazy dysków nie są dowodem
 gotowości do publikacji kodu. Checkout c20 wskazuje repozytorium zlecenia/c20,
 a jego nieśledzone obrazy dysków przekraczają zwykły limit pliku GitHub.
 
-Próba dodatkowego checkera wellmanifest/docs ujawniła brak formalnej adopcji tego pakietu w `.github` i różnicę własności raportu: profil Subactor wymaga `subactor/docs` jako domu raportów przekrojowych. Poprawiono zgodność nazw plików z ID. Dokumentacja pozostaje raportem organizacji Maskservice; nie deklarujemy pełnej zgodności z tym profilem ani nie zmieniamy jego reguł. C2004 ma odrębną, zweryfikowaną adopcję docs.
+Próba dodatkowego checkera wellmanifest/docs ujawniła brak formalnej adopcji tego pakietu w `.github` i różnicę własności raportu: sprawdzony wtedy profil 0.1.1 wymagał `subactor/docs` jako domu raportów przekrojowych. Nowszy zaobserwowany main docs 0.2.0 wskazuje `maskservice/report`; takiego repo nie znaleziono w dostępnym katalogu organizacji. Utworzenie i migracja wymagają ustalenia widoczności oraz adopcji/chronionej publikacji tego domu raportów. Poprawiono zgodność nazw plików z ID. Dokumentacja pozostaje raportem organizacji Maskservice; nie deklarujemy pełnej zgodności z tym profilem ani nie zmieniamy jego reguł. C2004 ma odrębną, zweryfikowaną adopcję docs. Uzupełniono ją do polityki 0.2.0 z main `4bd5096e59a4a4b2022949b1a49cba2eb94ed424` (ostatni formalny Release nadal v0.1.0). Preflight miejsca dokumentu, 25 testów adopcji, kontrola 28 dokumentów i hooki przeszły; publikacja C2004: `46cff7ba5`.
 
 <!-- docs:section recommendations -->
 ## Dalsze prace
