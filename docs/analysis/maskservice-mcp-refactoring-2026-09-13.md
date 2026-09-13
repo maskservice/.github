@@ -3,7 +3,7 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "maskservice-mcp-refactoring-2026-09-13",
   "kind": "analysis",
-  "version": 1,
+  "version": 2,
   "title": "Dostępność MCP i refaktoryzacja Maskservice",
   "status": "accepted",
   "owner": "maskservice/.github",
@@ -73,7 +73,7 @@ redeploy/update początkowo miał 916 sukcesów i siedem błędów: niezgodny bu
 kontrakt montowania katalogu oraz pięć braków przeglądarki. Istniejące zadanie
 update ticket-087 odświeża bundle do pinu C2004 i poprawia przenośność testu
 zewnętrznego redeploy; 19 testów kontraktowych/przeglądarkowych przechodzi przy
-użyciu dostępnego Chrome. Zmiany wypchnięto i ponownie otwarto PR #136.
+użyciu dostępnego Chrome. Zmiany wypchnięto i ponownie otwarto PR #136. Po doprecyzowaniu właściciela testu i jawnym oznaczeniu fikcyjnego tokena pełna bramka governance dla opublikowanej różnicy przechodzi.
 
 <!-- docs:section hypotheses -->
 ## Hipotezy
@@ -89,9 +89,11 @@ Aktualizacja standardów update ticket-090 jest wykonywana kolejno po integracji
 ticket-087; zabezpieczono ją patchem z SHA-256. Chronionego review nie zastępuje
 samo zaliczenie testów lokalnych. W maskauth zastana zmiana uprawnień wyjść
 narusza istniejący test zakresu; intencja rozszerzenia wymaga rozstrzygnięcia.
-Surowe mapy środowiska, logi planfile i lokalne obrazy dysków nie są dowodem
+Same indeksy ticketów Displaynet/laboratorium nie zostały opublikowane: pre-commit odrzuca tracking-only changes (GOV-AGENT-HOST-007); zachowano lokalne pliki. Surowe mapy środowiska, logi planfile i lokalne obrazy dysków nie są dowodem
 gotowości do publikacji kodu. Checkout c20 wskazuje repozytorium zlecenia/c20,
 a jego nieśledzone obrazy dysków przekraczają zwykły limit pliku GitHub.
+
+Próba dodatkowego checkera wellmanifest/docs ujawniła brak formalnej adopcji tego pakietu w `.github` i różnicę własności raportu: profil Subactor wymaga `subactor/docs` jako domu raportów przekrojowych. Poprawiono zgodność nazw plików z ID. Dokumentacja pozostaje raportem organizacji Maskservice; nie deklarujemy pełnej zgodności z tym profilem ani nie zmieniamy jego reguł. C2004 ma odrębną, zweryfikowaną adopcję docs.
 
 <!-- docs:section recommendations -->
 ## Dalsze prace

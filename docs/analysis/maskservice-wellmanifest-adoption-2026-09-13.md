@@ -3,7 +3,7 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "maskservice-wellmanifest-adoption-2026-09-13",
   "kind": "analysis",
-  "version": 1,
+  "version": 2,
   "title": "Adopcja i aktualizacja Wellmanifest w Maskservice",
   "status": "accepted",
   "owner": "maskservice/.github",
@@ -116,13 +116,13 @@ Przed zmianą nie wykryto okresowego odświeżania pakietów. Cztery stare hooki
 
 Walidacja: 97 testów narzędzi organizacji; 30 testów adopcji/logów C2004; po 3 testy twinów i lint; walidacja topologii Displaynet/laboratorium; kontrola standardów `update` oraz 24 testy DSL. Pięć bramek governance przeszło dla lokalnych zmian. Pełna bramka C2004 potwierdziła 28 dokumentów oraz 61 strumieni / 201 zdarzeń logów. Hooki C2004 (w tym regix i redup) przeszły; zmiana została wypchnięta na `main` w commicie `e4410c528`. Zweryfikowano również składnię YAML i shell wszystkich siedmiu nowych workflow.
 
-Stan lokalnych kandydatów:
+Stan kandydatów po publikacji:
 
-- `boardnet-digital-twin`: `d101e1a0fb97`, local-commit, `ticket-007`.
-- `displaynet`: `106f76268728`, local-commit, `ticket-006`.
-- `maskservice-digital-twin-lab`: `621830250508`, local-commit, `ticket-005`.
-- `stacknet-digital-twin`: `32e45abbef47`, local-commit, `ticket-007`.
-- `update`: `2ab4b6f798d7`, staged-blocked-by-ticket-087, `ticket-090`.
+- `boardnet-digital-twin`: `d101e1a0fb97`, pushed-pr, `ticket-007`.
+- `displaynet`: `106f76268728`, pushed-pr, `ticket-006`.
+- `maskservice-digital-twin-lab`: `621830250508`, pushed-pr, `ticket-005`.
+- `stacknet-digital-twin`: `32e45abbef47`, pushed-pr, `ticket-007`.
+- `update`: `2ab4b6f798d7`, serialized-recovery-patch, `ticket-090`.
 
 <!-- docs:section hypotheses -->
 ## Hipotezy
@@ -132,7 +132,7 @@ Nie przypisano samej obecności plików ani harmonogramu do udanej egzekucji zda
 <!-- docs:section limitations -->
 ## Ograniczenia i blokady
 
-Commit `update` blokuje `GOV-WORKTREE-OVERLAP-001/002`: istniejący `ticket-087--oql-scenario-sync` rości zakres `.governance/manifest.json`. [PR #136](https://github.com/maskservice/update/pull/136) zamknięto bez scalenia; jego HEAD nie jest przodkiem main. Zachowano ten checkout i jego historię. Kandydat ticket-090 pozostaje przygotowany, przetestowany i zapisany w prywatnym snapshotcie, bez obejścia hooka.
+Commit `update` blokuje `GOV-WORKTREE-OVERLAP-001/002`: istniejący `ticket-087--oql-scenario-sync` rości zakres `.governance/manifest.json`. [PR #136](https://github.com/maskservice/update/pull/136) ponownie otwarto i odświeżono w ramach kontynuacji; oczekuje na niezależną walidację. Jego HEAD nie jest jeszcze przodkiem main. Zachowano ten checkout i jego historię. Kandydat ticket-090 pozostaje przygotowany, przetestowany i zapisany w prywatnym snapshotcie, bez obejścia hooka.
 
 Brak finalnych GitHub Releases dla części standardów dziedzinowych nie jest błędem sieci ani dowodem gotowości: piny szkiców pozostają szkicami, a brakujące dokumenty instancji nie zostały wymyślone. Nie potwierdzano ochrony gałęzi ani wykonania nowych workflow na GitHub. Nie wdrażano zmian na urządzeniach.
 
@@ -140,8 +140,10 @@ Brak finalnych GitHub Releases dla części standardów dziedzinowych nie jest b
 ## Dalsze prace
 
 1. Rozstrzygnąć zakres/historię ticket-087 przed commitem i publikacją update/ticket-090.
-2. Opublikować zweryfikowane lokalne commity czterech projektów governance oraz `.github` zgodnie z regułami każdego repozytorium i sprawdzić pierwszy przebieg harmonogramu. C2004 jest już opublikowane.
+2. Doprowadzić do chronionego scalenia czterech opublikowanych PR-ów governance. OneDev zaliczył ich lokalne bramki; GitHub Actions blokuje rozliczenie konta. `.github` i C2004 są opublikowane.
 3. Dla 10 repozytoriów z samymi instrukcjami zaplanować rzeczywistą adopcję dopasowaną do produktu; nie przedstawiać hostowej polityki worktrees jako pełnego governance.
 4. Viewer aktualizować istniejącym `scripts/standard_check.py --sync` po zmianie opublikowanych źródeł; brak automatycznego publikowania jest jawny.
 
 Powtórzenie audytu: `python3 worktrees/standards.py /path/to/maskservice --remote`. Odświeżenie worktrees: `python3 worktrees/refresh_standard.py /path/to/adopter --apply`, następnie testy adoptera. Domyślny tryb updatera nie zapisuje plików.
+
+Aktualny raport narzędzi i publikacji: [MCP i refaktoryzacja](maskservice-mcp-refactoring-2026-09-13.md).
