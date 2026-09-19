@@ -22,3 +22,11 @@ migration, audit dirty/ignored data, processes and IDEs, leases, pull requests
 and HEAD reachability. Never automatically move, repair, delete or prune them.
 See the shared policy and pinned read-only checker:
 https://github.com/maskservice/.github/tree/main/worktrees
+
+## Repository boundary, Planfile sync, and delivery governance
+
+- **Repository boundary**: Never inherit configuration or Planfile context across separate repository boundaries (e.g. from parent or nested checkouts such as `c2004`). Always verify the exact GitHub repository identity (`origin`) before synchronizing Planfile state.
+- **Synchronization failures**: Treat any Planfile-to-GitHub sync error as a hard failure, never as a silent warning or fallback.
+- **Backlog separation & approvals**: Distinguish strictly between local backlog (`.planfile`), GitHub Issues, `ticket-lifecycle`, and independent approvals. Creating a GitHub Issue does not authorize hardware execution nor replace protected review.
+- **Continuation guidance**: Resume execution using verifiable commit and ticket references without re-requesting already-granted approvals and without overwriting unrelated working tree modifications.
+

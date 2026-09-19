@@ -45,7 +45,7 @@ def collect_pins(root):
         pin(vendor['repository'], vendor['revision'], vendor['version'],
             'worktrees/vendor/source.json', 'vendored')
     for item in read(root, 'standards/standards-lock.json').get('standards', []):
-        pin(item['id'], item['sourceRevision'], item['version'],
+        pin(item['id'], item.get('sourceRevision'), item.get('version'),
             'standards/standards-lock.json', item.get('status', 'declared'))
     for item in read(root, '.wellmanifest/adoption.json').get('standards', []):
         pin(item['id'], item['revision'], item['version'],

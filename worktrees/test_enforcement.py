@@ -6,8 +6,10 @@ import unittest
 
 from test_audit import AuditTests
 import enforcement
+import hook_contract
 import install_hook
 import precommit
+import subprocess
 
 
 class EnforcementTests(AuditTests):
@@ -149,6 +151,56 @@ class EnforcementTests(AuditTests):
         with self.assertRaises(ValueError):
             install_hook.install(self.repo)
         self.assertEqual(self.git('config', '--get', 'core.hooksPath').stdout.strip(), '/another-owner')
+
+    def test_owns_hook_resolves_from_origin_main_when_primary_behind(self):
+        self.git('branch', '-M', 'main')
+        origin_dir = Path(self.temp.name) / 'origin.git'
+        subprocess.run(['git', 'init', '--bare', '-b', 'main', str(origin_dir)], check=True, capture_output=True)
+        self.git('remote', 'add', 'origin', str(origin_dir))
+        self.git('push', '-u', 'origin', 'main')
+
+        clone_dir = Path(self.temp.name) / 'clone'
+        subprocess.run(['git', 'clone', str(origin_dir), str(clone_dir)], check=True, capture_output=True)
+        subprocess.run(['git', '-C', str(clone_dir), 'config', 'user.name', 'Audit Test'], check=True)
+        subprocess.run(['git', '-C', str(clone_dir), 'config', 'user.email', 'audit@example.invalid'], check=True)
+
+        lock_path = clone_dir / '.governance/manifest.lock.json'
+        lock_path.parent.mkdir(parents=True, exist_ok=True)
+        lock_path.write_text(json.dumps({'managedFiles': {'.githooks/pre-commit': '0' * 64}}))
+        hook_path = clone_dir / '.githooks/pre-commit'
+        hook_path.parent.mkdir(parents=True, exist_ok=True)
+        hook_path.write_text('#!/bin/sh\nexit 0\n')
+        hook_path.chmod(0o755)
+        subprocess.run(['git', '-C', str(clone_dir), 'add', '.governance', '.githooks'], check=True)
+        subprocess.run(['git', '-C', str(clone_dir), 'commit', '-m', 'adopt governance'], check=True)
+        subprocess.run(['git', '-C', str(clone_dir), 'push', 'origin', 'main'], check=True)
+
+        self.git('fetch', 'origin')
+        self.assertFalse((self.repo / '.governance/manifest.lock.json').exists())
+        self.assertTrue(hook_contract.owns_hook(self.repo))
+
+        wt_path = self.repo / '.worktrees/ticket-001--feat'
+        self.git('worktree', 'add', '--relative-paths', '-b', 'ticket/001-feat', str(wt_path), 'origin/main')
+        self.assertTrue((wt_path / '.governance/manifest.lock.json').is_file())
+        self.assertTrue(hook_contract.owns_hook(self.repo))
+        self.assertTrue(hook_contract.owns_hook(wt_path))
+
+        self.git('config', 'core.hooksPath', '.githooks')
+        report = install_hook.install(self.repo)
+        self.assertEqual(report['status'], 'managed-delegation')
+
+    def test_owns_hook_resolves_from_worktree_when_primary_lacks_lock(self):
+        self.assertFalse((self.repo / '.governance/manifest.lock.json').exists())
+        self.assertFalse(hook_contract.owns_hook(self.repo))
+
+        wt_path = self.repo / '.worktrees/ticket-002--feat'
+        self.git('worktree', 'add', '--relative-paths', '-b', 'ticket/002-feat', str(wt_path))
+        lock_path = wt_path / '.governance/manifest.lock.json'
+        lock_path.parent.mkdir(parents=True, exist_ok=True)
+        lock_path.write_text(json.dumps({'managedFiles': {'.githooks/pre-commit': '0' * 64}}))
+
+        self.assertTrue(hook_contract.owns_hook(self.repo))
+        self.assertTrue(hook_contract.owns_hook(wt_path))
 
 
 if __name__ == '__main__':
