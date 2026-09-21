@@ -1,7 +1,7 @@
 # maskservice
 
 [![Organization](https://img.shields.io/badge/GitHub-maskservice-black.svg)](https://github.com/maskservice)
-[![Projects](https://img.shields.io/badge/projects-21-blue.svg)](https://github.com/maskservice?tab=repositories)
+[![Projects](https://img.shields.io/badge/projects-22-blue.svg)](https://github.com/maskservice?tab=repositories)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Mask service firmware, calibration tooling and deployment automation.
@@ -24,6 +24,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | [firmware](https://github.com/maskservice/firmware) · [www](https://maskservice.github.io/firmware/) | C20 Multi-Platform Firmware — workspace root | HTML |
 | [fleet](https://github.com/maskservice/fleet) · [www](https://maskservice.github.io/fleet/) | Fleet | Python |
 | [i2c-pwm-mosfet-driver](https://github.com/maskservice/i2c-pwm-mosfet-driver) · [www](https://maskservice.github.io/i2c-pwm-mosfet-driver/) | I2C Pwm Mosfet Driver | — |
+| [manager](https://github.com/maskservice/manager) · [www](https://maskservice.github.io/manager/) | MaskService fleet and multi-repo interactive management shell | Python |
 | [maskauth](https://github.com/maskservice/maskauth) · [www](https://maskservice.github.io/maskauth/) | Universal identity-bound capability authorization for Maskservice applications | Python |
 | [maskservice-digital-twin-lab](https://github.com/maskservice/maskservice-digital-twin-lab) · [www](https://maskservice.github.io/maskservice-digital-twin-lab/) | Maskservice Digital Twin Lab | Python |
 | [recovery-images](https://github.com/maskservice/recovery-images) · [www](https://maskservice.github.io/recovery-images/) | Recovery Images | — |
@@ -39,7 +40,7 @@ Mask service firmware, calibration tooling and deployment automation.
 
 ## Statystyki
 
-- **Łącznie projektów**: 20
+- **Łącznie projektów**: 21
 - **Strony projektów**: `https://maskservice.github.io/<repo>/`
 
 _Ostatnia aktualizacja: 2026-09-21_
