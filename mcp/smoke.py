@@ -17,8 +17,11 @@ from workspace_profile import servers
 
 
 def payload(result):
-    if result.structuredContent is not None:
-        value = result.structuredContent
+    structured = getattr(result, "structuredContent", None)
+    if structured is None:
+        structured = getattr(result, "structured_content", None)
+    if structured is not None:
+        value = structured
     else:
         text = "\n".join(item.text for item in result.content if item.type == "text")
         try:
@@ -38,7 +41,10 @@ def payload(result):
 def accepted(result) -> bool:
     """Transport success alone is not a tool or conformance verdict."""
     value = payload(result)
-    if result.isError:
+    is_err = getattr(result, "isError", None)
+    if is_err is None:
+        is_err = getattr(result, "is_error", False)
+    if is_err:
         return False
     if isinstance(value, dict):
         if any(value.get(key) is False for key in ("success", "ok", "valid", "passed", "can_execute")):
