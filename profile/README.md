@@ -19,7 +19,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | [c2004](https://github.com/maskservice/c2004) · [www](https://maskservice.github.io/c2004/) | C2004 monorepo workspace metadata; runtime packages live in subprojects. | TypeScript |
 | [c2004-firmware](https://github.com/maskservice/c2004-firmware) · [www](https://maskservice.github.io/c2004-firmware/) | C2004 Firmware | Python |
 | [core](https://github.com/maskservice/core) · [www](https://maskservice.github.io/core/) | Shared system runtime and contracts for MaskService devices | Python |
-| [deploy](https://github.com/maskservice/deploy) · [www](https://maskservice.github.io/deploy/) | Deploy | HTML |
+| [deploy](https://github.com/maskservice/deploy) · [www](https://maskservice.github.io/deploy/) | Deploy | Python |
 | [discovery](https://github.com/maskservice/discovery) · [www](https://maskservice.github.io/discovery/) | Dynamic, identity-checked addressing for MaskService devices (StackNet, BoardNet, DisplayNet, MaskFleet) | Python |
 | [displaynet](https://github.com/maskservice/displaynet) · [www](https://maskservice.github.io/displaynet/) | Displaynet | Python |
 | [firmware](https://github.com/maskservice/firmware) · [www](https://maskservice.github.io/firmware/) | C20 Multi-Platform Firmware — workspace root | Python |
@@ -36,7 +36,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | [tests](https://github.com/maskservice/tests) · [www](https://maskservice.github.io/tests/) | Tests | Python |
 | [update](https://github.com/maskservice/update) · [www](https://maskservice.github.io/update/) | Update | Python |
 | [viewer](https://github.com/maskservice/viewer) · [www](https://maskservice.github.io/viewer/) | Viewer | Python |
-| [workshop](https://github.com/maskservice/workshop) · [www](https://maskservice.github.io/workshop/) | Workshop | HTML |
+| [workshop](https://github.com/maskservice/workshop) · [www](https://maskservice.github.io/workshop/) | Workshop | Python |
 
 ---
 
@@ -45,4 +45,4 @@ Mask service firmware, calibration tooling and deployment automation.
 - **Łącznie projektów**: 23
 - **Strony projektów**: `https://maskservice.github.io/<repo>/`
 
-_Ostatnia aktualizacja: 2026-10-12_
+_Ostatnia aktualizacja: 2026-10-13_
