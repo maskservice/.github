@@ -8,8 +8,10 @@ import json
 from pathlib import Path
 
 from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
-from mcp.shared.exceptions import McpError
+try:
+    from mcp.shared.exceptions import McpError
+except ImportError:
+    from mcp.shared.exceptions import MCPError as McpError
 
 from workspace_profile import servers
 
