@@ -1,7 +1,7 @@
 # maskservice
 
 [![Organization](https://img.shields.io/badge/GitHub-maskservice-black.svg)](https://github.com/maskservice)
-[![Projects](https://img.shields.io/badge/projects-25-blue.svg)](https://github.com/maskservice?tab=repositories)
+[![Projects](https://img.shields.io/badge/projects-26-blue.svg)](https://github.com/maskservice?tab=repositories)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Mask service firmware, calibration tooling and deployment automation.
@@ -23,6 +23,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | [deploy](https://github.com/maskservice/deploy) · [www](https://maskservice.github.io/deploy/) | Deploy | Python |
 | [discovery](https://github.com/maskservice/discovery) · [www](https://maskservice.github.io/discovery/) | Dynamic, identity-checked addressing for MaskService devices (StackNet, BoardNet, DisplayNet, MaskFleet) | Python |
 | [displaynet](https://github.com/maskservice/displaynet) · [www](https://maskservice.github.io/displaynet/) | Displaynet | Python |
+| [domains](https://github.com/maskservice/domains) · [www](https://maskservice.github.io/domains/) | Registry of MaskService devices: stable names (stacknet01), local domains, MAC identity and live IPs | Python |
 | [firmware](https://github.com/maskservice/firmware) · [www](https://maskservice.github.io/firmware/) | C20 Multi-Platform Firmware — workspace root | Python |
 | [fleet](https://github.com/maskservice/fleet) · [www](https://maskservice.github.io/fleet/) | Fleet | Python |
 | [i2c-pwm-mosfet-driver](https://github.com/maskservice/i2c-pwm-mosfet-driver) · [www](https://maskservice.github.io/i2c-pwm-mosfet-driver/) | I2C Pwm Mosfet Driver | — |
@@ -43,7 +44,7 @@ Mask service firmware, calibration tooling and deployment automation.
 
 ## Statystyki
 
-- **Łącznie projektów**: 24
+- **Łącznie projektów**: 25
 - **Strony projektów**: `https://maskservice.github.io/<repo>/`
 
 _Ostatnia aktualizacja: 2026-10-14_
