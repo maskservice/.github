@@ -4,10 +4,12 @@ import copy
 import hashlib
 import importlib.util
 import json
+import os
 import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 
@@ -26,6 +28,14 @@ class DocumentationAdapterTests(unittest.TestCase):
     repository = "maskservice/" + ROOT.name
 
     def setUp(self):
+        # Synthetic repositories have their own identity and commit history.
+        # A parent OneDev job must not become their authenticated job context.
+        environment = os.environ.copy()
+        environment.pop("ONEDEV_PR_REPOSITORY", None)
+        environment.pop("ONEDEV_PR_MAIN_SHA", None)
+        isolated = patch.dict(os.environ, environment, clear=True)
+        isolated.start()
+        self.addCleanup(isolated.stop)
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
@@ -48,6 +58,22 @@ class DocumentationAdapterTests(unittest.TestCase):
         entries["wellmanifest/report"]["artifacts"].pop()
         with self.assertRaises(RuntimeError):
             adapter.verify(self.root, entries)
+
+    def test_foreign_authenticated_identity_is_rejected(self):
+        with patch.dict(os.environ, {
+            "ONEDEV_PR_REPOSITORY": self.repository,
+            "ONEDEV_PR_MAIN_SHA": "a" * 40,
+        }):
+            with self.assertRaisesRegex(RuntimeError, "authenticated OneDev"):
+                adapter.checker_environment(self.root)
+
+    def test_authenticated_job_requires_a_full_base_commit(self):
+        with patch.dict(os.environ, {
+            "ONEDEV_PR_REPOSITORY": "maskservice/displaynet",
+            "ONEDEV_PR_MAIN_SHA": "main",
+        }):
+            with self.assertRaisesRegex(RuntimeError, "authenticated OneDev"):
+                adapter.checker_environment(self.root)
 
     def test_report_validation_reads_actual_document_bytes(self):
         schema = json.loads(
