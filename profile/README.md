@@ -1,7 +1,7 @@
 # maskservice
 
 [![Organization](https://img.shields.io/badge/GitHub-maskservice-black.svg)](https://github.com/maskservice)
-[![Projects](https://img.shields.io/badge/projects-24-blue.svg)](https://github.com/maskservice?tab=repositories)
+[![Projects](https://img.shields.io/badge/projects-25-blue.svg)](https://github.com/maskservice?tab=repositories)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Mask service firmware, calibration tooling and deployment automation.
@@ -18,6 +18,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | [boardnet-digital-twin](https://github.com/maskservice/boardnet-digital-twin) · [www](https://maskservice.github.io/boardnet-digital-twin/) | Contract-level BoardNet/OqlOS digital twin | Python |
 | [c2004](https://github.com/maskservice/c2004) · [www](https://maskservice.github.io/c2004/) | C2004 monorepo workspace metadata; runtime packages live in subprojects. | TypeScript |
 | [c2004-firmware](https://github.com/maskservice/c2004-firmware) · [www](https://maskservice.github.io/c2004-firmware/) | C2004 Firmware | Python |
+| [confignet](https://github.com/maskservice/confignet) · [www](https://maskservice.github.io/confignet/) | Confignet | Python |
 | [core](https://github.com/maskservice/core) · [www](https://maskservice.github.io/core/) | Shared system runtime and contracts for MaskService devices | Python |
 | [deploy](https://github.com/maskservice/deploy) · [www](https://maskservice.github.io/deploy/) | Deploy | Python |
 | [discovery](https://github.com/maskservice/discovery) · [www](https://maskservice.github.io/discovery/) | Dynamic, identity-checked addressing for MaskService devices (StackNet, BoardNet, DisplayNet, MaskFleet) | Python |
@@ -42,7 +43,7 @@ Mask service firmware, calibration tooling and deployment automation.
 
 ## Statystyki
 
-- **Łącznie projektów**: 23
+- **Łącznie projektów**: 24
 - **Strony projektów**: `https://maskservice.github.io/<repo>/`
 
 _Ostatnia aktualizacja: 2026-10-14_
