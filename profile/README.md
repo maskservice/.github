@@ -34,7 +34,7 @@ Mask service firmware, calibration tooling and deployment automation.
 | [recovery-images](https://github.com/maskservice/recovery-images) · [www](https://maskservice.github.io/recovery-images/) | Recovery Images | — |
 | [redeploy](https://github.com/maskservice/redeploy) · [www](https://maskservice.github.io/redeploy/) | Redeploy | Shell |
 | [rp2040-keyboard](https://github.com/maskservice/rp2040-keyboard) · [www](https://maskservice.github.io/rp2040-keyboard/) | Complete solution for RP2040-One based USB HID keypad with rotary encoder | Python |
-| [stacknet](https://github.com/maskservice/stacknet) · [www](https://maskservice.github.io/stacknet/) | Stacknet | C |
+| [stacknet](https://github.com/maskservice/stacknet) · [www](https://maskservice.github.io/stacknet/) | StackNet host control CLI (m122ctl) and controller configuration tools | C |
 | [stacknet-digital-twin](https://github.com/maskservice/stacknet-digital-twin) · [www](https://maskservice.github.io/stacknet-digital-twin/) | Contract-level StackNet/CoreS3 digital twin | Python |
 | [tests](https://github.com/maskservice/tests) · [www](https://maskservice.github.io/tests/) | Tests | Python |
 | [update](https://github.com/maskservice/update) · [www](https://maskservice.github.io/update/) | Update | Python |
