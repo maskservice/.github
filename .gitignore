@@ -6,3 +6,4 @@
 /.subactor/cache/
 /.subactor/snapshots/
 __pycache__/
+*.py[cod]
