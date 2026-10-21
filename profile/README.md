@@ -48,4 +48,4 @@ Mask service firmware, calibration tooling and deployment automation.
 - **Łącznie projektów**: 26
 - **Strony projektów**: `https://maskservice.github.io/<repo>/`
 
-_Ostatnia aktualizacja: 2026-10-20_
+_Ostatnia aktualizacja: 2026-10-21_
