@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Read-only local audit; GitHub CI cannot observe developers' worktree registries."""
+from __future__ import annotations
+
 import argparse
 import hashlib
 import json
@@ -7,6 +9,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+from typing import Any, Dict, Iterator, List, Optional, Set
 
 HERE = Path(__file__).resolve().parent
 IGNORES = ['/.worktrees/'] + [f'/.subactor/{part}/' for part in
@@ -15,26 +18,26 @@ SKIP = {'.git', '.subactor', '.worktrees', 'worktrees', 'node_modules', '.venv',
         '__pycache__', '.cache', 'dist', 'build', 'storage'}
 
 
-def run(*args, cwd=None):
+def run(*args: Any, cwd: Optional[Path] = None) -> str:
     return subprocess.run(args, cwd=cwd, capture_output=True, text=True, check=True).stdout
 
 
-def repositories(root):
+def repositories(root: Path) -> Iterator[Path]:
     for base, dirs, files in os.walk(root):
         if '.git' in dirs or '.git' in files:
             yield Path(base)
         dirs[:] = [d for d in dirs if d not in SKIP and not (Path(base) / d).is_symlink()]
 
 
-def checker(*args, cwd):
+def checker(*args: Any, cwd: Path) -> Dict[str, Any]:
     return json.loads(run(sys.executable, str(HERE / 'vendor/conformance.py'), *args, cwd=cwd))
 
 
-def audit(repo):
+def audit(repo: Path) -> Dict[str, Any]:
     record = checker('inventory', '--repository', repo.name, '--repository-name', repo.name,
                      '--from-worktree', str(repo), cwd=repo)
     primary = Path(record['primaryCheckout'])
-    findings = []
+    findings: List[Dict[str, Any]] = []
     ignore = primary / '.gitignore'
     lines = ignore.read_text().splitlines() if ignore.exists() else []
     for rule in IGNORES:
@@ -59,7 +62,7 @@ def audit(repo):
                                  'expectedBranch': expected_branch})
             if any(component.is_symlink() for component in [path, *path.parents]):
                 findings.append({'code': 'symlinked-layout', 'path': str(path)})
-            lease = primary / '.subactor/leases' / (path.name + '.json')
+            lease = primary / '.subactor/leases' / f"{path.name}.json"
             # Existence is only an observation; this tool does not authenticate ownership.
             entry['leaseExists'] = lease.is_file()
             if not lease.is_file():
@@ -85,20 +88,22 @@ def audit(repo):
     return record
 
 
-def verify_source():
-    source = json.loads((HERE / 'vendor/source.json').read_text())
+def verify_source() -> Dict[str, Any]:
+    source: Dict[str, Any] = json.loads((HERE / 'vendor/source.json').read_text())
     for name, artifact in source['artifacts'].items():
         if hashlib.sha256((HERE / 'vendor' / name).read_bytes()).hexdigest() != artifact['sha256']:
             raise ValueError(f'Pinned checker artifact changed: {name}')
     return source
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('root', type=Path)
     args = parser.parse_args()
     source = verify_source()
-    records, seen, errors = [], set(), []
+    records: List[Dict[str, Any]] = []
+    seen: Set[str] = set()
+    errors: List[Dict[str, Any]] = []
     for repo in repositories(args.root.resolve()):
         try:
             record = audit(repo)

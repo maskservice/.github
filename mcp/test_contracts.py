@@ -1,18 +1,21 @@
+from __future__ import annotations
+
 import json
-import tomllib
-import unittest
 from pathlib import Path
+import tomllib
+from typing import Any, Dict
+import unittest
 
 from mcp.types import CallToolResult, TextContent
-from workspace_profile import render, servers
 from smoke import accepted, payload
+from workspace_profile import render, servers
 
 
 class MCPContracts(unittest.TestCase):
-    def result(self, value, **kwargs):
+    def result(self, value: Any, **kwargs: Any) -> CallToolResult:
         return CallToolResult(content=[TextContent(type="text", text=json.dumps(value))], **kwargs)
 
-    def test_nested_transport_success_cannot_hide_rejection(self):
+    def test_nested_transport_success_cannot_hide_rejection(self) -> None:
         for value in ({"success": False}, {"ok": False}, {"valid": False},
                       {"success": True, "verdict": "fail"}, {"plan_error": "missing planner"},
                       {"success": True, "status": "partial"},
@@ -22,14 +25,14 @@ class MCPContracts(unittest.TestCase):
                 self.assertEqual(payload(result), value)
                 self.assertFalse(accepted(result))
 
-    def test_transport_error_overrides_successful_payload(self):
+    def test_transport_error_overrides_successful_payload(self) -> None:
         self.assertFalse(accepted(self.result({"success": True}, isError=True)))
 
-    def test_serialized_fastmcp_result_is_unwrapped(self):
+    def test_serialized_fastmcp_result_is_unwrapped(self) -> None:
         self.assertEqual(payload(self.result({}, structuredContent={"result": '{"valid": false}'})),
                          {"valid": False})
 
-    def test_project_profile_preserves_scope_and_quoted_paths(self):
+    def test_project_profile_preserves_scope_and_quoted_paths(self) -> None:
         workspace = Path(__file__).resolve().parents[2]
         config = servers(workspace, Path('/runtime with spaces/python'))
         parsed = tomllib.loads(render(config))["mcp_servers"]
